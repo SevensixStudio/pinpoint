@@ -1,5 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
 
@@ -36,6 +37,27 @@ passport.use(
                     done(null, existingUser);
                 } else {
                     new User({ googleId: profile.id }) //create new model instance in mongoose
+                        .save() //.save() saves model instance to the database
+                        .then(user => done(null, user));
+                }
+            });
+    })
+);
+
+passport.use(
+    new FacebookStrategy({
+        clientID: keys.facebookAppId,
+        clientSecret: keys.facebookAppSecret,
+        callbackURL: '/auth/facebook/callback'
+    }, (accessToken, refreshToken, profile, done) => {
+        User.findOne({ facebookId: profile.id })
+            .then(existingUser => {
+                if (existingUser) {
+                    //already have a record with the given profile id
+                        //first arg is an error object --in this scenario we found a user so there are no errors
+                    done(null, existingUser);
+                } else {
+                    new User({ facebookId: profile.id }) //create new model instance in mongoose
                         .save() //.save() saves model instance to the database
                         .then(user => done(null, user));
                 }

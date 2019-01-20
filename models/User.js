@@ -6,7 +6,8 @@ const { Schema } = mongoose;
 
 //create schema for this collection
 const userSchema = new Schema({
-    googleId: String
+    googleId: String,
+    facebookId: String
 });
 
             //1st arg is name of collection

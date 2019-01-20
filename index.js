@@ -17,12 +17,15 @@ mongoose.connect(keys.mongoURI);
 //generate new express application - can have mutliple express apps in one project
 const app = express();
 
+//app.use is used to wire up middlewares -- small functions that used to modify incoming requests before they are sent to route handlers
 //tells express that we are going to make use of cookies inside of our app
 app.use(
     cookieSession({ //pass in configuration object
         maxAge: 30 * 24 * 60 * 60 * 1000, //30 days in ms - how long this cookie can live inside of the browser before it is automatically expired
         keys: [keys.cookieKey] //key used to encrypt cookie -- so that people cannot manually change user id and fake being someelse inside the app
     })
+    //cookie session extracts that data and assigns it to req.session
+    //passport is now looking at req.session and pulls that relevant data out of there and sends it along to deserialize user, etc
 );
 
 //tell passport that it should make use of cookies to handle authentication
