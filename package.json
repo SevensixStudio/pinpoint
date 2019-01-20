@@ -10,7 +10,7 @@
   "scripts": {
     "start:": "node index.js"
   },
-  "author": "",
+  "author": "Summer Brochtrup",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4"
