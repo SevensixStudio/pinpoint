@@ -14,7 +14,7 @@ const app = express();
 // 'req' -- request - contains data about who is making the request
 // 'res -- response - represents outgoing response
 app.get('/',  (req, res) => {
-    res.send({ hi: 'there' });
+    res.send({ hello: 'world' });
 });
 
 //dynamic port binding
