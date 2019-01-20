@@ -9,4 +9,10 @@ module.exports = (app) => {
     
     //google triggers this callback which in turn takes the code and sends it over to the google strategy to get the actual information for the user
     app.get('/auth/google/callback', passport.authenticate('google'));
+
+    //req is incoming request
+    //res is the outgoing response
+    app.get('/api/current_user', (req, res) => {
+        res.send(req.user);
+    });
 };
