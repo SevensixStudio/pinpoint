@@ -5,12 +5,13 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 
 import App from './components/App';
+import reducers from './reducers';
 
 //create store
 //first argument is all of the reducers in our app
 //second argument is the initial state of the app - mostly relevant for server side rendering so not necessary for this app
 //third arg, apply middleware call
-const store = createStore(() => [], {}, applyMiddleware());
+const store = createStore(reducers, {}, applyMiddleware());
 
     //1st arg - root component, 2nd arg - where we are attempting to render it in the dom
 ReactDOM.render(
