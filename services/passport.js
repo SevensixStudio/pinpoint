@@ -25,7 +25,8 @@ passport.use(
         clientID: keys.googleClientID,
         clientSecret: keys.googleClientSecret,
         //this will be the route that the user is sent to after they grant permission to our app
-        callbackURL: '/auth/google/callback'
+        callbackURL: '/auth/google/callback', //relative path -- 
+        proxy: true
     }, (accessToken, refreshToken, profile, done) => {
         
         //findOne will return a model instance of the existing user if one exists
