@@ -27,21 +27,17 @@ passport.use(
         //this will be the route that the user is sent to after they grant permission to our app
         callbackURL: '/auth/google/callback', //relative path -- 
         proxy: true
-    }, (accessToken, refreshToken, profile, done) => {
+    }, async (accessToken, refreshToken, profile, done) => {
         
         //findOne will return a model instance of the existing user if one exists
-        User.findOne({ googleId: profile.id })
-            .then(existingUser => {
-                if (existingUser) {
-                    //already have a record with the given profile id
-                        //first arg is an error object --in this scenario we found a user so there are no errors
-                    done(null, existingUser);
-                } else {
-                    new User({ googleId: profile.id }) //create new model instance in mongoose
-                        .save() //.save() saves model instance to the database
-                        .then(user => done(null, user));
-                }
-            });
+        const existingUser = await User.findOne({ googleId: profile.id });        
+        if (existingUser) {
+            //already have a record with the given profile id
+                //first arg is an error object --in this scenario we found a user so there are no errors
+           return done(null, existingUser);
+        } 
+        const user = await new User({ googleId: profile.id }).save();                                                     
+        done(null, user);
     })
 );
 
@@ -51,18 +47,12 @@ passport.use(
         clientSecret: keys.facebookAppSecret,
         callbackURL: '/auth/facebook/callback',
         proxy: true
-    }, (accessToken, refreshToken, profile, done) => {
-        User.findOne({ facebookId: profile.id })
-            .then(existingUser => {
-                if (existingUser) {
-                    //already have a record with the given profile id
-                        //first arg is an error object --in this scenario we found a user so there are no errors
-                    done(null, existingUser);
-                } else {
-                    new User({ facebookId: profile.id }) //create new model instance in mongoose
-                        .save() //.save() saves model instance to the database
-                        .then(user => done(null, user));
-                }
-            });
+    }, async (accessToken, refreshToken, profile, done) => {
+        const existingUser = await User.findOne({ facebookId: profile.id });
+        if (existingUser) {
+            return done(null, existingUser);
+        } 
+        const user = await new User({ facebookId: profile.id }).save(); 
+        done(null, user);
     })
 );
