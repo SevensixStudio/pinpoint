@@ -10,13 +10,25 @@ module.exports = (app) => {
     app.get('/auth/facebook', passport.authenticate('facebook'));
     
     //google triggers this callback which in turn takes the code and sends it over to the google strategy to get the actual information for the user
-    app.get('/auth/google/callback', passport.authenticate('google'));
+    app.get(
+        '/auth/google/callback',
+         passport.authenticate('google'),
+         (req, res) => {
+            res.redirect('/surveys');
+         } //where the request is sent after the passport.authenticate middleware is executred
+    );
 
-    app.get('/auth/facebook/callback', passport.authenticate('facebook'));
+    app.get(
+        '/auth/facebook/callback', 
+        passport.authenticate('facebook'),
+        (req, res) => {
+            res.redirect('/surveys');
+         }
+    );
 
     app.get('/api/logout', (req, res) => {
         req.logout();
-        res.send(req.user);
+        res.redirect('/');
     });
 
     //req is incoming request
