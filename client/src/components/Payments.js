@@ -11,7 +11,7 @@ class Payments extends Component {
                 name="PinPoint"//header in payment window
                 description="$5 for 5 survey credits"
                 amount={500} //amount of money (in cents) requested from the user
-                token={token => this.props.handleToken(token)} //a call back function which is called after we have successfully recieved a authorization token from the stripe api
+                token={token => this.props.handleToken(token, 500)} //a call back function which is called after we have successfully recieved a authorization token from the stripe api
                 stripeKey={process.env.REACT_APP_STRIPE_KEY}>
                 <button className="btn">
                     Add Credits
