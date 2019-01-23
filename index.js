@@ -10,6 +10,7 @@ const keys = require('./config/keys');
 const bodyParser = require('body-parser'); //middleware, needs to be wired up using app.user
 
 require('./models/User');
+require('./models/Survey');
 require('./services/passport');
 
 //connect to mongodb
