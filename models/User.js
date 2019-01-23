@@ -7,7 +7,8 @@ const { Schema } = mongoose;
 //create schema for this collection
 const userSchema = new Schema({
     googleId: String,
-    facebookId: String
+    facebookId: String,
+    credits: { type: Number, default: 0 } //use object to assign type and default value
 });
 
             //1st arg is name of collection

@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const keys = require('./config/keys');
+const bodyParser = require('body-parser'); //middleware, needs to be wired up using app.user
 
 require('./models/User');
 require('./services/passport');
@@ -16,6 +17,11 @@ mongoose.connect(keys.mongoURI);
 
 //generate new express application - can have mutliple express apps in one project
 const app = express();
+
+//wire up body-parse middleware
+//bodyParser will parse the body and assign it to the req.body body of the incoming request object from post, put, patch requests 
+
+app.use(bodyParser.json());
 
 //app.use is used to wire up middlewares -- small functions that used to modify incoming requests before they are sent to route handlers
 //tells express that we are going to make use of cookies inside of our app
@@ -35,6 +41,7 @@ app.use(passport.session());
 //no need to save authroutes to a variable so just call it here
 //authroutes returns function which requires 'app' as a variable
 require('./routes/authRoutes')(app);
+require('./routes/billingRoutes')(app);
 
 
 //dynamic port binding
