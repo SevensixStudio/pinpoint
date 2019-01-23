@@ -43,6 +43,18 @@ app.use(passport.session());
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
 
+if (process.env.NODE_ENV === 'production') {
+    //Express will serve up production assets (main.js, main.css)
+    app.use(express.static('client/build'));
+    //if any get request comes in and we do not understand what it is looking for, then look into the client/build directory and see if there is a file in there that matches and if so, respond with that
+
+    //Express will serve up the index.html file if it doesn't recognize the route
+    const path = require('path');
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    });
+}
+
 
 //dynamic port binding
 //Heroku injects environment variables at runtime
