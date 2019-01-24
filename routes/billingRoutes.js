@@ -7,18 +7,19 @@ module.exports = app => {
         //handle token and finalize charge with stripe
         //post does not automatically parse the request body so we use a middleware body-parser
     
-        const amount = req.body.amount;
+        const cost = req.body.cost;
+        const credits = req.body.credits;
 
         //create charge and bill credit card
         const charge = await stripe.charges.create({
-            amount: amount,
+            amount: cost,
             currency: 'usd',
-            description: amount + ' for ' + (amount/100) + ' credits',
+            description: cost + ' for ' + credits + ' credits',
             source: req.body.token.id //id of current charge authorization
         });
         
         //update user's credits
-        req.user.credits += 5;
+        req.user.credits += credits;
         const user = await req.user.save();
 
         //send back data to browser

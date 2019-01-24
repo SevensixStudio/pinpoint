@@ -9,8 +9,8 @@ export const fetchUser = () => async dispatch => {
     dispatch({ type: FETCH_USER, payload: res.data });
 };
 
-export const handleToken = (token, amount) => async dispatch => {
-    const res = await axios.post('/api/stripe', {token, amount});
+export const handleToken = (token, cost, credits) => async dispatch => {
+    const res = await axios.post('/api/stripe', {token, cost, credits});
     //send updated user info (with added credits) to update header
     dispatch({ type: FETCH_USER, payload: res.data });
 };
