@@ -8,8 +8,8 @@ import Header from './Header';
 import Landing from './Landing';
 import Dashboard from './Dashboard';
 import PurchaseCredits from './PurchaseCredits';
+import SurveyNew from './surveys/SurveyNew';
 
-const SurveyNew = () => <h2>SurveyNew</h2>
 
 
 //BrowserRouter can have at most ONE child
