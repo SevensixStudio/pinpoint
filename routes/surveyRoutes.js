@@ -1,3 +1,7 @@
+const _ = require('lodash');
+const Path = require('path-parser').default;
+    //url is in integrated model in the node.js system
+const { URL } = require('url'); 
 const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
 const requireCredits = require('../middlewares/requireCredits');
@@ -7,8 +11,47 @@ const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 const Survey = mongoose.model('surveys');
 
 module.exports = app => {
-    app.get('/api/surveys/thanks', (req, res) => {
+    app.get('/api/surveys/:surveyId/:choice', (req, res) => {
         res.send('Thank you for your feedback!');
+    });
+
+    app.post('/api/surveys/webhooks', (req, res) => {
+        const p = new Path('/api/surveys/:surveyId/:choice');
+        //extract the path from the incoming url, the survey id, and the choice
+         _.chain(req.body)
+            .map(({ email, url }) => {
+                const match = p.test(new URL(url).pathname);
+                if (match) {
+                    return { email, surveyId: match.surveyId, choice: match.choice};
+                }
+            })
+            //iterates through the array and removes any elements that are undefined
+            .compact()
+            //remove any duplicates
+            .uniqBy('email', 'surveyId')
+            //iterate over events and issue query for each one
+            .each(({ surveyId, email, choice }) => {
+                Survey.updateOne({
+                    //find the correct survey
+                    _id: surveyId,
+                    recipients: {
+                        //find the correct recipient
+                        $elemMatch: {
+                            email: email,
+                            responded: false
+                        }
+                    }
+                }, {
+                    //update properties with fields in this object without ever pulling it over to our express server
+                    $inc: { [choice] : 1 }, //Mongo operator -- put logic inside query. Find the choice property and increment (inc) by 1
+                    //using [] around choice (key interpolation) it will pull in the value of the choice variable
+                    $set: { 'recipients.$.responded': true }, //$ here refers to recipient returned from elemMatch from the original query above
+                    lastResponded: new Date()
+                }).exec(); 
+            })
+            .value();
+
+        res.send({}); //notify sendgrid that we are good
     });
 
     app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
@@ -42,3 +85,5 @@ module.exports = app => {
         //survey handler complete
     });
 };
+
+
