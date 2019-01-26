@@ -1,0 +1,23 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+}
+    
+
+html {
+    box-sizing: border-box;
+    font-size: 62.5%; //1rem = 10px, 10/16 = 62.5%
+}
+
+body {
+    box-sizing: border-box;
+    
+}
+
+.container{
+    display: grid;
+    grid-template-rows: 8rem 80vh 20vh 10rem 20rem 10rem;
+    grid-template-columns: repeat(8, 1fr);
+}

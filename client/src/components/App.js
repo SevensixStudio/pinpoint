@@ -4,11 +4,13 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-import Header from './Header';
-import Landing from './Landing';
+import Header from './header/Header';
+import Landing from './landing/Landing';
 import Dashboard from './Dashboard';
 import PurchaseCredits from './PurchaseCredits';
 import SurveyNew from './surveys/SurveyNew';
+
+import '../index.scss';
 
 
 
@@ -22,7 +24,7 @@ class App extends Component {
         return (
             <div>
                 <BrowserRouter>
-                    <div className="container">
+                    <div class="container">
                         <Header />
                         <Route exact path="/" component={Landing} />
                         <Route exact path="/surveys" component={Dashboard} />

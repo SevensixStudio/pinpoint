@@ -22,15 +22,13 @@ const SurveyFormReview = ({ onEditClicked, formValues, submitSurvey, history }) 
             <h5>Please confirm your entries</h5>
             {reviewFields}
             <button
-                className="yellow white-text darken-3 btn-flat"
                 onClick={onEditClicked}>
                 Edit
             </button>
             <button
-                className="green btn-flat right"
                 onClick={() => submitSurvey(formValues, history)}>
                 Send Survey
-                <i className="material-icons right white-text">email</i>
+                <i>email</i>
             </button>
         </div>
     );
