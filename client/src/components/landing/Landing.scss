@@ -1,3 +1,79 @@
+@import '../../index.scss';
+
 .Landing {
+    grid-column:  1 / -1;
+    display: grid;
+    grid-template-rows: 17rem 1fr 10rem;
+    grid-template-columns: 10rem 1fr 10rem;
+
     
+    &__background {
+        grid-column:  1 / -1;
+        grid-row: 1 / -1;
+
+        background-image: linear-gradient(
+        to right bottom, 
+        rgba($color-primary-light, 0.8), 
+        rgba($color-secondary, 0.9)), 
+        url(../../img/landing.jpg);
+        background-size: cover;
+        background-position: bottom;
+
+        @supports (-webkit-clip-path: polygon(0 0)) or (clip-path: polygon(0 0)) {
+            -webkit-clip-path: polygon(0 0, 100% 0, 100% 70vh, 0 100%);
+            clip-path: polygon(0 0, 100% 0, 100% 70vh, 0 100%);
+        }
+    }
+
+    &__content {
+        grid-column:  2 / span 1;
+        grid-row: 2 / span 2;
+        z-index: 100;
+
+        display: grid;
+        grid-template-rows: max-content 1fr;
+        grid-template-columns: 1fr 27vw;
+        grid-column-gap: 7rem;
+    
+        &--text-box {
+            height: 100px;
+            grid-row: 1 / span 1;
+            grid-column: 1 / span 1;
+        
+            .heading-primary--main {
+                display: inline;
+                color: $color-primary-dark;
+                background-color: white;
+                box-shadow: -7px 0 0 10px #fff, 7px 0 0 10px #fff;
+            }
+        }
+    
+        &--cta-box {
+            height: 100%;
+            grid-row: 2 / span 1;
+            grid-column: 2 / span 1;
+            background-color: $color-primary;
+            border-radius: 3px;
+            padding: 0 3rem;
+            text-align: center;
+
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+
+            :not(:last-child) {
+                margin-bottom: 2.5rem;
+            }
+
+            i {
+                font-size: 11rem;
+            }
+
+            &--text {
+                font-size: 1.8rem;
+                line-height: 1.2;
+                font-weight: 300;
+            }
+        }
+    }
 }
