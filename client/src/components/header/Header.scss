@@ -1,0 +1,57 @@
+@import '../../index.scss';
+
+.Header {
+    background-color: $color-primary;
+    grid-column: 1 / -1;
+
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    grid-template-rows: auto;
+
+    justify-content: space-between;
+
+
+    &__logo {
+        
+        
+
+        &--icon {
+            font-size: 4.5rem;
+            justify-content: flex-start;
+            align-items: center;
+            margin-left: 1rem;
+        }
+
+        &--text {
+            color: inherit;
+            text-decoration: none;
+            margin-left: 3px;
+        }
+    }
+
+    &__nav {
+        font-size: 2rem;
+        text-transform: uppercase;
+        list-style-type: none;
+        margin-right: 2rem;
+
+        display: grid;
+        grid-template-columns: repeat(2, max-content);
+        justify-content: end;
+        grid-column-gap: 2rem;
+        align-items: center;
+        justify-content: center;
+
+        &--item {
+
+            a {
+                text-decoration: none;
+            }
+            
+            &--text {
+                color: $color-white;
+                font-weight: 300;
+            }
+        }
+    }
+}
