@@ -2,19 +2,28 @@
 
 .Landing {
     grid-column:  1 / -1;
+    grid-row: 2 / span 1;
     display: grid;
-    grid-template-rows: 17rem 1fr 10rem;
+    grid-template-rows: 
+        [hero-start] 20vh
+        [main-start] 65vh
+        [main-end hero-end gap-start] 8rem 
+        [gap-end stats-start] 20vh
+        [stats-end full-end]; 
+    
+
     grid-template-columns: 10rem 1fr 10rem;
 
     
     &__background {
         grid-column:  1 / -1;
-        grid-row: 1 / -1;
+        grid-row: hero-start / hero-end;
 
-        background-image: linear-gradient(
-        to right bottom, 
-        rgba($color-primary-light, 0.8), 
-        rgba($color-secondary, 0.9)), 
+        background-image: 
+        // linear-gradient(
+        // to right bottom, 
+        // rgba($color-primary-light, 0.8), 
+        // rgba($color-secondary, 0.9)), 
         url(../../img/landing.jpg);
         background-size: cover;
         background-position: bottom;
@@ -27,16 +36,16 @@
 
     &__content {
         grid-column:  2 / span 1;
-        grid-row: 2 / span 2;
+        grid-row: main-start / main-end;
         z-index: 100;
 
         display: grid;
-        grid-template-rows: max-content 1fr;
+        grid-template-rows: min-content 1fr;
         grid-template-columns: 1fr 27vw;
         grid-column-gap: 7rem;
     
         &--text-box {
-            height: 100px;
+            height: 10rem;
             grid-row: 1 / span 1;
             grid-column: 1 / span 1;
         
@@ -50,11 +59,11 @@
     
         &--cta-box {
             height: 100%;
-            grid-row: 2 / span 1;
+            grid-row: 2 / span 4;
             grid-column: 2 / span 1;
             background-color: $color-primary;
             border-radius: 3px;
-            padding: 0 3rem;
+            padding: 0 4rem;
             text-align: center;
 
             display: flex;
@@ -73,6 +82,34 @@
                 font-size: 1.8rem;
                 line-height: 1.2;
                 font-weight: 300;
+            }
+        }
+    }
+
+    &__stats {
+        grid-column:  1 / -1;
+        grid-row: stats-start / stats-end;
+
+        display: grid;
+        grid-template-columns: repeat(3, max-content);
+        grid-column-gap: 12rem;
+        justify-content: center;
+        align-items: center;
+        
+
+        &__stat-box {
+            text-align: center;
+            font-weight: 300;
+
+            &--number {
+                font-size: 6rem;
+                color: $color-primary-dark;
+            }
+
+            &--text {
+                font-size: 1.8rem;
+                color: black;
+                text-transform: uppercase;
             }
         }
     }

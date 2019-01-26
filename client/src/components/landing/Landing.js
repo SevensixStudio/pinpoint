@@ -23,6 +23,20 @@ const Landing = () => {
                     <p><a className="btn btn--yellow" href="#">Try it for free</a></p>
                 </div>
             </div>
+            <div className="Landing__stats">
+                <div className="Landing__stats__stat-box">
+                    <p className="Landing__stats__stat-box--number">450k+</p>
+                    <p className="Landing__stats__stat-box--text">surveys sent</p>
+                </div>
+                <div className="Landing__stats__stat-box">
+                    <p className="Landing__stats__stat-box--number">3.5M+</p>
+                    <p className="Landing__stats__stat-box--text">responses recieved</p>
+                </div>
+                <div className="Landing__stats__stat-box">
+                    <p className="Landing__stats__stat-box--number">99%</p>
+                    <p className="Landing__stats__stat-box--text">satisfaction rate</p>
+                </div>
+            </div>
         </header>
     );
 };

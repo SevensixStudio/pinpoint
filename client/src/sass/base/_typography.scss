@@ -11,13 +11,13 @@ body {
 }
 
 .heading-primary {
-    font-family: 'Raleway Dots';
     color: $color-white;
     text-transform: uppercase;
     backface-visibility: hidden;
     margin-bottom: 6rem;
 
     &--main {
+        font-family: 'Raleway Dots';
         display: block;
         font-size: 5.5rem;
         font-weight: 400;
@@ -27,7 +27,7 @@ body {
     &--sub {
         display: block;
         font-size: 2rem;
-        font-weight: 700;
+        font-weight: 400;
         letter-spacing: 1.2rem;;
     }
 }
