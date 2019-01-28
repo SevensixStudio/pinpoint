@@ -1,0 +1,83 @@
+@import '../../index.scss';
+
+.Dashboard {
+    
+    &__stats {   
+        margin: 6rem 10rem;
+
+        @supports(display: grid) {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(10vw, 1fr));
+            grid-gap: 5rem;
+            align-items: start;
+        }
+       
+        &--box {
+            padding: 1rem 2rem 2.5rem 2rem;
+            height: 100%;
+    
+            &--label {
+                font-size: 1.4rem;
+            }
+
+            &--number {
+                font-size: 7rem;
+                font-weight: 300;
+                text-align: center;
+            }
+        }
+
+        div:first-child {
+            display: grid;
+            grid-template-rows: max-content 1fr max-content;
+            background-color: $color-primary-dark;
+            align-items: center;
+
+            p:first-child {
+                color: $color-primary-light;
+            }
+
+            a {
+                justify-self: center;
+            }
+        }
+
+        div:not(:first-child) {
+            background-color: $color-grey-light-2;
+            color: $color-grey-dark-2;
+            position: relative;
+
+            p:nth-child(2) {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                color: $color-primary-dark;
+            }
+        }
+    }
+
+    &__survey-toolbar {
+        margin: 2rem 10rem;
+        display: grid;
+        color: $color-grey-dark-2;
+        grid-template-columns: repeat(2, max-content);
+        grid-template-rows: repeat(2, max-content);
+        justify-content: space-between;
+        align-items: end;
+
+        hr {
+            margin-top: 1rem;
+            grid-column: 1 / -1;
+            background-color: $color-grey-dark-2;
+            display: block;
+            height: 1.2px;
+            border: 0;
+        }
+    }
+
+    &__surveyList {
+        margin: 1rem 10rem;
+    }
+}

@@ -27,3 +27,9 @@ body {
     grid-template-rows: 8rem max-content 1fr;
     grid-template-columns: 1fr 60vw 1fr;
 }
+
+.dashboard-container {
+    display: grid;
+    grid-template-rows: 8rem max-content 1fr;
+    //grid-template-columns: 1fr;
+}
