@@ -12,14 +12,14 @@ const Landing = () => {
             <header className="Landing">
                 <div className="Landing__background"></div>
                 <div className="Landing__content">
-                    <div class="Landing__content--text-box">
-                        <h1 class="heading-primary">
-                            <span class="heading-primary--main">Know your audience</span>
-                            <span class="heading-primary--sub">Get valuable customer feedback and get on with the show</span>
+                    <div className="Landing__content--text-box">
+                        <h1 className="heading-primary">
+                            <span className="heading-primary--main">Know your audience</span>
+                            <span className="heading-primary--sub">Get valuable customer feedback and get on with the show</span>
                         </h1>
                     </div>
                     <div className="Landing__content--cta-box">
-                        <i class="fas fa-poll-h"></i>
+                        <i className="fas fa-poll-h"></i>
                         <h4 className="Landing__content--cta-box--header heading-secondary">Send your first<br />survey for free</h4>
                         <p className="Landing__content--cta-box--text">
                             Ice cream wafer bear claw jelly-o. Chocolate cake jelly beans macaroon chocolate cake wafer oat cake caramels. Liquorice liquorice donut.
