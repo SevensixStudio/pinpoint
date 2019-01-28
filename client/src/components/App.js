@@ -4,11 +4,11 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-import Header from './header/Header';
 import Landing from './landing/Landing';
 import Dashboard from './Dashboard';
 import PurchaseCredits from './PurchaseCredits';
 import SurveyNew from './surveys/SurveyNew';
+import Login from './login/Login';
 
 import '../index.scss';
 
@@ -24,12 +24,13 @@ class App extends Component {
         return (
             <div>
                 <BrowserRouter>
-                    <div class="container">
-                        <Header />
+                    <div className="container">
                         <Route exact path="/" component={Landing} />
                         <Route exact path="/surveys" component={Dashboard} />
-                        <Route path="/surveys/new" component={SurveyNew} />
+                        <Route path="/surveys/new" component={() => SurveyNew} />
                         <Route path="/purchase" component={PurchaseCredits} />
+                        <Route path="/login" component={Login} />
+                        <Route path="/signup" component={Login} />
                     </div>
                 </BrowserRouter>
             </div>

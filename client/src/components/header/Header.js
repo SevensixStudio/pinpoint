@@ -2,18 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import Logo from '../logo/Logo';
+
 import '../../index.scss';
 import './Header.scss';
 
 class Header extends Component {
+    
     renderContent() {
        switch (this.props.auth) {
            case null:
                 return;
            case false:
                 return [
-                    <li className="Header__nav--item" key="1"><a className="Header__nav--item--text" href="/auth/google">Login</a></li>,
-                    <li className="Header__nav--item" key="2"><a className="btn btn--yellow" href="#">Sign up for free</a></li>
+                    <li className="Header__nav--item" key="1"><a className="Header__nav--item--text" href="/login">Login</a></li>,
+                    <li className="Header__nav--item" key="2"><a className="btn btn--yellow" href="/signup">Sign up for free</a></li>
                 ];
            default: 
                 return [
@@ -27,12 +30,7 @@ class Header extends Component {
     render() {
         return (
             <nav className="Header">
-                <div className="Header__logo">
-                    <span className="Header__logo--icon">
-                        <i class="fas fa-icicles fa-rotate-90"></i>
-                    </span>
-                    <Link className="Header__logo--text logo-display-text" to={this.props.auth ? '/surveys' : '/' } >PinPoint</Link>
-                </div>
+                <Logo className="Header__logo" logoClass="logo--header"/>
                 <ul className="Header__nav">
                     {this.renderContent()}
                 </ul>

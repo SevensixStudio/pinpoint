@@ -1,0 +1,121 @@
+@import '../../index.scss';
+
+.Login {
+    grid-column: 2 / span 1;
+    grid-row: 2 / span 1;
+    color: $color-grey-dark-2;
+
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    grid-row-gap: 1.5rem;
+
+    &__message {
+        font-size: 1.7rem;
+        letter-spacing: .2rem;
+        text-transform: uppercase;
+        margin-top: 1.5rem;
+        text-align: center;
+        width: 80%;
+    }
+
+    &__form {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+
+        &--group {
+        
+           &:not(:last-child) {
+               margin-bottom: 1rem;
+           }
+
+            &--input {
+                font-size: 1.5rem;
+                font-family: inherit;
+                color: $color-grey-dark-3;
+                padding: 1.5rem 2rem;
+                border-radius: 2px;
+                background-color: rgba($color-grey-dark-2, .5);
+                border: none;
+                border-bottom: 3px solid transparent;
+                width: 34rem;
+                display: block;
+                transition: all .3s;
+                
+                &:focus {
+                    outline: none;
+                    box-shadow: 0 1rem 2rem rgba($color-black, .1);
+                    border-bottom: 3px solid $color-primary;
+                }
+
+                &:focus:invalid {
+                    background-color: rgba($color-grey-dark-2, .5);
+                    border-bottom: 3px solid $color-secondary;
+                }
+
+                &::-webkit-input-placeholder {
+                    color: $color-grey-dark-2;
+                }
+            }
+
+            &--label {
+                font-size: 1.3rem;
+                font-weight: 700;
+                margin-left: 2rem;
+                margin-top: .2rem;
+                display: block;
+                transition: all .3s;
+                opacity: 0;
+                transform: translateY(-1rem);
+            }
+
+            &--input:focus + label {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .btn {
+                display: block;
+                margin: 0 auto;
+            }
+        }
+    }
+
+    &__or-text {
+        display: grid;
+        grid-template-columns: 1fr max-content 1fr;
+        grid-column-gap: 1.5rem;
+        align-items: center;
+        width: 80%;
+
+        font-size: 1.6rem;
+        color: $color-grey-dark-2;
+
+        &::before,
+        &::after {
+            content: "";
+            height: 1px;
+            display: block;
+            background-color: $color-grey-dark-2;
+        }
+    }
+
+    &__login-with {
+        margin-top: 2rem;
+
+
+        a {
+            display: block;
+            width: 32rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            text-decoration: none;
+        }
+    }
+
+    &__create-account {
+        color: $color-grey-dark-4;
+    }
+
+}
