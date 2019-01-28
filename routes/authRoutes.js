@@ -18,7 +18,7 @@ module.exports = (app) => {
         '/auth/google/callback',
          passport.authenticate('google'),
          (req, res) => {
-            res.redirect('/surveys');
+            res.redirect('/dashboard');
          } //where the request is sent after the passport.authenticate middleware is executred
     );
 
@@ -26,7 +26,7 @@ module.exports = (app) => {
         '/auth/facebook/callback', 
         passport.authenticate('facebook'),
         (req, res) => {
-            res.redirect('/surveys');
+            res.redirect('/dashboard');
          }
     );
 
