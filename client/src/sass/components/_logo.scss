@@ -1,0 +1,23 @@
+.logo {
+    text-decoration: none;
+    color: inherit;
+    display: grid;
+    grid-template-columns: max-content max-content;
+    justify-content: center;
+    align-items: center;
+
+    &--text {
+        font-family: 'Raleway Dots';
+        margin-left: 3px;
+        font-weight: 300;
+    }
+
+    &--header {
+        font-size: 4.5rem;
+    }
+
+    &--big {
+       font-size: 5rem;
+       color: $color-primary-dark;
+    }
+}

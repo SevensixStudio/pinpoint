@@ -4,7 +4,6 @@
     margin: 0;
     padding: 0;
 }
-    
 
 html {
     box-sizing: border-box;
@@ -13,11 +12,18 @@ html {
 
 body {
     box-sizing: border-box;
+    font-size: 1.6rem;
     
 }
 
-.container{
+.landing-container{
     display: grid;
     grid-template-rows: 8rem max-content 1vh 10rem 20rem 10rem;
     grid-template-columns: repeat(8, 1fr);
+}
+
+.login-container {
+    display: grid;
+    grid-template-rows: 8rem max-content 1fr;
+    grid-template-columns: 1fr 60vw 1fr;
 }

@@ -40,5 +40,48 @@
             background-color: $color-secondary;
         }
     }
-    
+
+    &--primaryDark {
+        background-color: $color-primary-dark;
+        color: $color-grey-light-1;
+        
+        &::after {
+            background-color: $color-primary-dark;
+        }
+
+        &:hover {
+            background-color: $color-primary;
+        }
+    }
+}
+
+.login-btn {
+    background-color: $color-primary;
+    color: $color-grey-light-1;
+    border: none;
+    border-radius: 0;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    padding: 1.6rem 3rem;
+    cursor: pointer;
+    transition: all .2s;
+
+    &:hover {
+        background-color: $color-primary-dark;
+    }
+
+    i {
+        margin-right: 1rem;
+        font-size: 1.8rem;
+    }
+}
+
+.inline-link {
+    text-decoration: none;
+    color: $color-primary-dark;
+    font-weight: bold;
+
+    &:hover {
+        color: $color-primary;
+    }
 }
