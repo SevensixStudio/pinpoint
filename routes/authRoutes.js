@@ -3,11 +3,15 @@ const passport = require('passport');
 module.exports = (app) => {
     //route handler                              //strategy name
     app.get('/auth/google', passport.authenticate('google', {
-            scope: ['profile', 'email'] //specifies to google what data we want from the user
+            scope: ['profile', 'email'], //specifies to google what data we want from the user
+            prompt : "select_account"
         })
     );
 
-    app.get('/auth/facebook', passport.authenticate('facebook'));
+    app.get('/auth/facebook', passport.authenticate('facebook', {
+            authType: 'reauthenticate'
+        })
+    );
     
     //google triggers this callback which in turn takes the code and sends it over to the google strategy to get the actual information for the user
     app.get(
@@ -31,6 +35,11 @@ module.exports = (app) => {
         res.redirect('/');
     });
 
+    app.get('/api/logoutsignup', (req, res) => {
+        req.logout();
+        res.redirect('/signup');
+    });
+    
     //req is incoming request
     //res is the outgoing response
     app.get('/api/current_user', (req, res) => {
