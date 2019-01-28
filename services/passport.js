@@ -36,7 +36,7 @@ passport.use(
                 //first arg is an error object --in this scenario we found a user so there are no errors
            return done(null, existingUser);
         } 
-        const user = await new User({ googleId: profile.id }).save();                                                     
+        const user = await new User({ googleId: profile.id, credits: 1 }).save();                                                     
         done(null, user);
     })
 );
