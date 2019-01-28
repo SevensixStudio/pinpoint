@@ -20,9 +20,9 @@ class Header extends Component {
                 ];
            default: 
                 return [
-                    <li className="Header__nav--item" key="1"><a className="Header__nav--item--text" href="/api/logout">Create survey</a></li>,
+                    <li className="Header__nav--item" key="1"><a className="Header__nav--item--text" href="/surveys/new">Create survey</a></li>,
                     <li className="Header__nav--item" key="2"><a className="Header__nav--item--text" href="/api/logout">Logout</a></li>,
-                    <li className="Header__nav--item" key="3"><Link className="btn btn--yellow" to="/signup">Buy credits</Link></li>
+                    <li className="Header__nav--item" key="3"><Link className="btn btn--yellow" to="/purchase">Buy credits</Link></li>
                 ];
        }
     }
