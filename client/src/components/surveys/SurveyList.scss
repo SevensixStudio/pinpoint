@@ -1,0 +1,10 @@
+@import '../../index.scss';
+
+.SurveyList {
+    color: black;
+
+    &__item {
+        background-color: $color-grey-light-2;
+        margin-bottom: 2rem;
+    }
+}
