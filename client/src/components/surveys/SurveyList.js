@@ -4,7 +4,9 @@ import { fetchSurveys } from '../../actions';
 
 class SurveyList extends Component {
     componentDidMount() {
-        this.props.fetchSurveys();
+        if (this.props.auth) {
+            this.props.fetchSurveys();
+        }
     }
 
     renderSurveys() {
@@ -36,8 +38,8 @@ class SurveyList extends Component {
     }
 }
 
-function mapStateToProps({ surveys }) {
-    return { surveys };
+function mapStateToProps({ surveys, auth }) {
+    return { surveys, auth };
 }
 
 export default connect(mapStateToProps, { fetchSurveys })(SurveyList);
