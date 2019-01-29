@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchSurveys } from '../../actions';
+import CircleGraph from '../circleGraph/CircleGraph';
 
 import '../../index.scss';
 import './SurveyList.scss';
@@ -9,7 +10,6 @@ class SurveyList extends Component {
     componentDidMount() {
         console.log(this.props.auth);
         if (this.props.auth) {
-        
             this.props.fetchSurveys();
         }
     }
@@ -17,26 +17,29 @@ class SurveyList extends Component {
     renderSurveys() {
         console.log(this.props.surveys);
         if (this.props.surveys.length === 0) {
-            return <p>NO SURVEYS</p>;
+            return <p className="SurveyList__empty">You haven't created any surveys yet. <a className="inline-link" href="/surveys/new">Create one now!</a></p>;
         }
         return this.props.surveys.reverse().map(survey => {
             return (
                 <div key={survey._id} className="SurveyList__item">
-                    <div>
-                        <span>{survey.title}</span>
-                        <p>Edit: show on hover</p>
-                        <p>Send: show on hover</p>
-                        <p>Delete: show on hover</p>
-                        <p>{survey.body}</p>
-                        <p>Created on: 1/1/1111</p>
-                        <p>
-                            Sent on: {new Date(survey.dateSent).toLocaleDateString()}
-                        </p>
+                    <div className="SurveyList__item--titleBox">
+                        <h3>{survey.title}</h3>
+                        <p className="subject">Subject: {survey.subject}</p>
+                        <p className="date">Created on: {new Date(survey.dateSent).toLocaleDateString() + " " + new Date(survey.dateSent).toLocaleTimeString()}</p>
+                        <p className="date">Sent on: {new Date(survey.dateSent).toLocaleDateString() + " " + new Date(survey.dateSent).toLocaleTimeString()}</p>
                     </div>
-                    <div>
-                        <a>Yes: {survey.yes}</a>
-                        <a>No: {survey.no}</a>
-                        <p>Pretty circle diagram</p>
+                    <div className="SurveyList__item--numbers">
+                        <p className="label">Responses Recieved</p>
+                        <p className="number number-1">{survey.yes + survey.no}</p>
+                        <p className="label">Not responded</p>
+                        <p className="number">{survey.totalRecipients - (survey.yes + survey.no)}</p>
+                    </div>
+                    <div className="SurveyList__item--graph">
+                        <CircleGraph color="primary" value={survey.yes + survey.no} total={survey.totalRecipients} label="response rate" />
+                    </div>
+                    <div className="SurveyList__item--lastResponse">
+                        <hr />
+                        <p className="date">Last response recieved: {new Date(survey.lastResponded).toLocaleDateString() + " at " + new Date(survey.lastResponded).toLocaleTimeString()}</p>
                     </div>
                 </div>
             );
