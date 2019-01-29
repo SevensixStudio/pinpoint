@@ -1,0 +1,78 @@
+@import '../../index.scss';
+
+.SurveyList {
+    color: $color-grey-dark-4;
+
+    &__item {
+        background-color: $color-grey-light-2;
+        margin-bottom: 2rem;
+        display: grid;
+        grid-template-rows: 1fr max-content;
+        grid-template-columns: 1fr max-content max-content;
+        grid-column-gap: 2rem;
+        grid-row-gap: 1rem;
+        padding: 2rem 3rem 1rem 2.5rem;
+
+        &--titleBox {
+            grid-row: 1 / span 2;
+            
+            
+            h3 {
+                font-size: 2.6rem;
+                font-weight: 300;
+            }
+
+            .subject {
+                display: inline-block;
+                background-color: $color-primary;
+                border-radius: 3px;
+                color: $color-white;
+                padding: .4rem 1rem;
+                margin-bottom: 3rem;
+                font-weight: 300;
+            }
+        }
+
+        &--numbers {
+            grid-row: 1 / span 1;
+            text-align: end;
+
+            .label {
+                font-size: 1.2rem;
+                color: $color-grey-dark-2;
+            }
+
+            .number {
+                font-size: 3rem;
+                color: $color-primary-dark;
+            }
+
+            .number-1 {
+                margin-bottom: 2rem;
+            }
+        }
+
+        &--graph{
+            grid-row: 1 / span 1;
+            width: 15rem;
+            align-self: center;
+            justify-self: center;
+        }
+            
+
+        &--lastResponse {
+            grid-row: 2 / -1;
+            grid-column: 2 / -1;
+            justify-self: end;
+        }
+    }
+
+    .date {
+        color: $color-grey-dark-2;
+    }
+
+    &__empty {
+        color: $color-grey-dark-4;
+    }
+}
+
