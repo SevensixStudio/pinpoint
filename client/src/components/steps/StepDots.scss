@@ -1,0 +1,23 @@
+@import '../../index.scss';
+
+.StepDots {
+    &__step {
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #bbbbbb;
+        border: none; 
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 0.5;
+
+        &--current {
+            background-color: $color-primary-light;
+            opacity: 1;
+        }
+
+        &--stepFinished {
+            background-color: $color-grey-dark-4;
+        }
+    }
+}
