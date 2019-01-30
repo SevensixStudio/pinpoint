@@ -4,8 +4,15 @@ const RecipientSchema = require('./Recipient');
 
 const surveySchema = new Schema({
     title: String,
-    body: String,
     subject: String,
+    greeting: String,
+    body: String,
+    question: String,
+    yesText: String, 
+    noText: String,
+    goodbye: String,
+    signature: String,
+    fromEmail: String,
     recipients: [RecipientSchema], //sub-document collection - embed data into a property
     yes: { type: Number, default: 0 },
     no: { type: Number, default: 0 },
