@@ -63,17 +63,25 @@ module.exports = app => {
     });
 
     app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
-        const { title, subject, body, recipients } = req.body;
+        const { title, subject, greeting, body, question, yesText, noText, goodbye, signature, fromEmail, recipients } = req.body;
         //create survey
         const survey = new Survey({
             title,
             subject, 
+            greeting,
             body,
+            question,
+            yesText, 
+            noText,
+            goodbye,
+            signature,
+            fromEmail,
             recipients: recipients.split(',').map(email => ({ email: email.trim() })),
             totalRecipients: recipients.length,
             _user: req.user.id,
             dateSent: Date.now()
         }); 
+
         //attempt to create and send email
         const mailer = new Mailer(survey, surveyTemplate(survey));
         try {

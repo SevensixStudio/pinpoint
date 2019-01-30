@@ -6,15 +6,17 @@ module.exports = survey => {
     <html>
       <body>
         <div style="text-align: center;">
-          <h3>We'd like your input!</h3>
-          <p>Please answer the following question:</p>
+          <h4>${survey.greeting}</h4>
           <p>${survey.body}</p>
+          <p>${survey.question}</p>
           <div>
-            <a href="${keys.redirectDomain}/api/surveys/${survey.id}/yes">Yes</a>
+            <a href="${keys.redirectDomain}/api/surveys/${survey.id}/yes">${survey.yesText}</a>
           </div>
           <div>
-            <a href="${keys.redirectDomain}/api/surveys/${survey.id}/no">No</a>
+            <a href="${keys.redirectDomain}/api/surveys/${survey.id}/no">${survey.noText}</a>
           </div>
+          <p>${survey.goodbye}</p>
+          <p>${survey.signature}</p>
         </div>
       </body>
     </html>

@@ -3,12 +3,12 @@ const helper = sendgrid.mail;
 const keys = require('../config/keys');
 
 class Mailer extends helper.Mail {
-    constructor({ subject, recipients }, content) {
+    constructor({ subject, fromEmail, recipients }, content) {
         //super - call the parent class constructor (helper.Mail)
         super();
         this.sgApi = sendgrid(keys.sendGridKey);
         //assign properties to given instance of Mailer using 'this'
-        this.from_email = new helper.Email('no-reply@emaily.com');
+        this.from_email = new helper.Email(fromEmail);
         this.subject = subject;
         this.body = new helper.Content('text/html', content);
         this.recipients = this.formatAddresses(recipients);
