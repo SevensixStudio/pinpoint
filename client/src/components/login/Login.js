@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Logo from  '../logo/Logo';
+import LoginForm from './LoginForm';
 
 import '../../index.scss';
 import './Login.scss';
+import loginInputs from './loginInputs';
+
 
 class Login extends Component {
 
     renderMessage() {
-        console.log(this.props.auth);
         switch (this.props.auth) {
             case null:
                 return;
@@ -25,13 +27,8 @@ class Login extends Component {
         }
     }
 
-    renderRepeatPassword() {
-        return (
-            <div className="Login__form--group">
-                <input type="password" className="Login__form--group--input" placeholder="Repeat Password" id="repeatPassword" required />
-                <label htmlFor="repeatPassword" className="Login__form--group--label">Repeat Password</label>
-            </div>
-        );
+    handleSubmit() {
+        console.log('LOGGING IN...');
     }
 
     render() {
@@ -41,20 +38,9 @@ class Login extends Component {
                 <div className="Login">
                     <Logo className="Login__logo" logoClass="logo--big" />
                     {this.renderMessage()}
-                    <form action="#" className="Login__form">
-                        <div className="Login__form--group">
-                            <input type="email" className="Login__form--group--input" placeholder="Email" id="email" required />
-                            <label htmlFor="email" className="Login__form--group--label">Email</label>
-                        </div>
-                        <div className="Login__form--group">
-                            <input type="password" className="Login__form--group--input" placeholder="Password" id="password" required />
-                            <label htmlFor="password" className="Login__form--group--label">Password</label>
-                        </div>
-                        {isSignUp ? this.renderRepeatPassword() : null}
-                        <div className="Login__form--group">
-                            <button className="btn btn--primaryDark">{isSignUp ? 'Sign up' : 'Login'} &rarr;</button>
-                        </div>
-                    </form>
+                    <div className="Login__formContainer">
+                        <LoginForm inputs={isSignUp ? loginInputs : [loginInputs[0], loginInputs[1]] } onSubmit={this.handleSubmit} buttonText={isSignUp ? 'Sign up' : 'Login'} />
+                    </div>
                     <p className="Login__or-text">or</p>
                     <div className="Login__login-with">
                         <a href="/auth/google" className="login-btn"><i className="fab fa-google"></i> Sign {isSignUp ? 'up ' : 'in '} with Google</a>
@@ -72,5 +58,4 @@ class Login extends Component {
 function mapStateToProps({ auth }) {
     return { auth };
 }
-
 export default connect(mapStateToProps)(Login);
