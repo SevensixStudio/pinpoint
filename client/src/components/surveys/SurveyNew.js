@@ -1,22 +1,23 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../actions';
+
 import Header from '../header/Header';
 import SurveyFormWizard from './wizardForm/SurveyFormWizard'; 
 
 import '../../index.scss';
 
-class SurveyNew extends Component {
-    onSubmit() {
-        console.log('ALL DONE');
-    }
+const SurveyNew = ({ submitSurvey, history }) => {
 
-    render() {
         return (
             <div className="surveyNew-container">
                 <Header />
-                <SurveyFormWizard onSubmit={this.onSubmit} />
+                <SurveyFormWizard onSubmit={(formValues) => submitSurvey(formValues, history)} />
             </div>
-        )
-    }
-}
+        );
+    
+};
 
-export default SurveyNew;
+const mapStateToProps = state => state;
+
+export default connect(mapStateToProps, actions)(SurveyNew);
