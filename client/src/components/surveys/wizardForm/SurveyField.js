@@ -1,14 +1,20 @@
 import React from 'react';
-                                //nested destructuring
+
+import '../../../index.scss';
+import './SurveyField.scss';
+                                
 export default ({ input, label, type, meta: { error, touched } }) => {
-    //pass all of the properties into html input using...input -- carries over all key/value pairs
+    
     return (
-        <div>
-            <label>{label}</label>
-            <input {...input} placeholder={label} type={type} style={{ marginBottom: '5px' }} />
-            <div style={{ marginBottom: '20px' }}>
-                {touched && error}
-            </div>
+        <div className="SurveyField">
+            {touched && error && <span className="SurveyField__error">{error}</span>}
+            {(() => {
+                if (type === "textarea") {
+                    return <textarea className="SurveyField__input SurveyField__input--textarea" {...input} placeholder={label} type={type} />
+                } 
+                return <input className="SurveyField__input" {...input} placeholder={label} type={type} />
+            })()}
+            <label className="SurveyField__label">{label}</label>
         </div>
     );
 };
