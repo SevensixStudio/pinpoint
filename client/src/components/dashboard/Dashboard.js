@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import SurveyList from '../surveys/SurveyList';
+import SurveyList from '../surveyList/SurveyList';
 import Header from '../header/Header';
 
 import '../../index.scss';
