@@ -31,5 +31,9 @@ body {
 .dashboard-container {
     display: grid;
     grid-template-rows: 8rem max-content 1fr;
-    //grid-template-columns: 1fr;
+}
+
+.surveyNew-container {
+    display: grid;
+    grid-template-rows: 8rem;
 }

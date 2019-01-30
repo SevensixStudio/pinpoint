@@ -1,0 +1,85 @@
+@import '../../../index.scss';
+
+.WizardStep {
+    background-color: $color-grey-light-2;
+    color: $color-grey-dark-4;
+    padding: 2rem;
+
+    &__title {
+        font-size: 1.9rem;
+        color: $color-primary-light;
+        text-transform: uppercase;
+        font-weight: 400;
+    }
+
+    &__message {
+        margin: 2rem 6rem 3rem 3rem;
+        font-size: 1.7rem;
+    }
+
+
+    &__form {
+
+        &--fields {
+            margin-right: 6rem;
+            margin-left: 3rem;
+        }
+
+        &--buttons {
+            margin-top: 5rem;
+
+           display: grid;
+           grid-template-columns: repeat(3, max-content);
+           grid-column-gap: 2rem;
+           justify-content: space-between;
+
+            .button--stepdots {
+                grid-column: 2 / span 1;
+                grid-row: 1 /span 1;
+                display: inline-block;
+                align-self: end;
+            }
+
+            .button--next {
+                grid-column: 3 / span 1;
+    
+                i {
+                    margin-left: 1rem;
+                 }
+            }
+
+            .button--previous {
+                grid-column: 1 / span 1;
+
+                i {
+                    margin-right: 1rem;
+                 }
+     
+            }
+
+            .button--next, 
+            .button--previous {
+                background-color: $color-primary;
+                color: $color-white;
+                
+                &::after {
+                    background-color: $color-primary;
+                }
+            }
+
+            .button--submit {
+                grid-column: 3 / span 1;
+                background-color: $color-secondary;
+                color: $color-grey-dark-3;
+                
+                &::after {
+                    background-color: $color-secondary;
+                }
+            }
+        }
+    }
+}
+
+.hidden {
+    visibility: hidden;
+}

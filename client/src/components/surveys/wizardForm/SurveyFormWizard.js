@@ -1,11 +1,12 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import surveySteps from './surveySteps';
 import WizardStep from './WizardStep';
-import StepDots from '../../steps/StepDots';
 
 import '../../../index.scss';
+import './SurveyFormWizard.scss';
+
+const NUMBER_OF_PAGES = 6;
 
 
 class SurveyFormWizard extends Component {
@@ -30,15 +31,14 @@ class SurveyFormWizard extends Component {
         const { onSubmit } = this.props;
         const { page } = this.state;
         return (
-            <div>
-                <div className="SurveyNew__title">
+            <div className="SurveyFormWizard">
+              <div className="SurveyFormWizard__title">
                 Create a new survey
                 <hr />
-                </div>
-                <div className="SurveyNew__form">
-                  <WizardStep step={surveySteps[page]} onSubmit={this.nextPage} previousPage={this.previousPage} isFirst={page === 1} isLast={page === 6}/>
-                </div>
-            
+              </div>
+              <div className="SurveyFormWizard__form">
+                <WizardStep step={surveySteps[page]} onSubmit={page === NUMBER_OF_PAGES ? onSubmit : this.nextPage} previousPage={this.previousPage} stepNumber={page} numberOfSteps={NUMBER_OF_PAGES} />
+              </div>
           </div>
         )
       }
@@ -49,5 +49,3 @@ SurveyFormWizard.propTypes = {
 }
   
 export default SurveyFormWizard;
-
-
