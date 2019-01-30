@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import validate from '../../../utils/validate';
-import SurveyField from './SurveyField';
+import FormField from '../../formField/FormField';
 import StepDots from '../../steps/StepDots';
 
 import '../../../index.scss';
@@ -16,7 +16,7 @@ const WizardStep = ({step, handleSubmit, stepNumber, numberOfSteps, previousPage
             <form className="WizardStep__form" onSubmit={handleSubmit}>
                 <div className="WizardStep__form--fields">
                     {_.map(step.fields, field => {
-                        return <Field key={field.name} component={SurveyField} {...field} />
+                        return <Field key={field.name} component={FormField} {...field} />
                     })}
                 </div>
                 <div className="WizardStep__form--buttons">
