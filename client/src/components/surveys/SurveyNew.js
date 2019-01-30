@@ -3,7 +3,6 @@ import Header from '../header/Header';
 import SurveyFormWizard from './wizardForm/SurveyFormWizard'; 
 
 import '../../index.scss';
-import './SurveyNew.scss';
 
 class SurveyNew extends Component {
     onSubmit() {
@@ -12,7 +11,7 @@ class SurveyNew extends Component {
 
     render() {
         return (
-            <div className="surveyNew-container SurveyNew">
+            <div className="surveyNew-container">
                 <Header />
                 <SurveyFormWizard onSubmit={this.onSubmit} />
             </div>
