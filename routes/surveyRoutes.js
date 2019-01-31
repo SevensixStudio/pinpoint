@@ -11,6 +11,7 @@ const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 const Survey = mongoose.model('surveys');
 
 module.exports = app => {
+    
     app.get('/api/surveys', requireLogin, async (req, res) => {
         //we don't want to pull out all of the recipients because we won't be showing any of these email address
         //solution? whitelist the reciepient field using Query#select 
@@ -20,62 +21,56 @@ module.exports = app => {
         res.send(surveys);
     });
 
+    app.get('/api/surveys/:surveyId', requireLogin, async (req, res) => {
+        const survey = await Survey.findOne({ _id: req.params.surveyId })
+            .select({ recipients: false });
+        res.send(survey);
+    });
+
     app.get('/api/surveys/:surveyId/:choice', (req, res) => {
         res.send('Thank you for your feedback!');
     });
 
-    app.delete('/api/surveys/:surveyId', requireLogin, async (req, res) => {
-        try {
-            await Survey.deleteOne({ _id: req.params.surveyId });
-        } catch (err) {
-            res.send(err);
-        }
-        const surveys = await Survey.find({ _user: req.user.id })
-            .sort({dateSent: -1})
-            .select({recipients: false});
-
-        res.send(surveys);
-    });
-
+    
     app.post('/api/surveys/webhooks', (req, res) => {
         const p = new Path('/api/surveys/:surveyId/:choice');
         //extract the path from the incoming url, the survey id, and the choice
-         _.chain(req.body)
-            .map(({ email, url }) => {
-                const match = p.test(new URL(url).pathname);
-                if (match) {
-                    return { email, surveyId: match.surveyId, choice: match.choice};
-                }
-            })
-            //iterates through the array and removes any elements that are undefined
-            .compact()
-            //remove any duplicates
-            .uniqBy('email', 'surveyId')
-            //iterate over events and issue query for each one
-            .each(({ surveyId, email, choice }) => {
-                Survey.updateOne({
-                    //find the correct survey
-                    _id: surveyId,
-                    recipients: {
-                        //find the correct recipient
-                        $elemMatch: {
-                            email: email,
-                            responded: false
-                        }
+        _.chain(req.body)
+        .map(({ email, url }) => {
+            const match = p.test(new URL(url).pathname);
+            if (match) {
+                return { email, surveyId: match.surveyId, choice: match.choice};
+            }
+        })
+        //iterates through the array and removes any elements that are undefined
+        .compact()
+        //remove any duplicates
+        .uniqBy('email', 'surveyId')
+        //iterate over events and issue query for each one
+        .each(({ surveyId, email, choice }) => {
+            Survey.updateOne({
+                //find the correct survey
+                _id: surveyId,
+                recipients: {
+                    //find the correct recipient
+                    $elemMatch: {
+                        email: email,
+                        responded: false
                     }
-                }, {
-                    //update properties with fields in this object without ever pulling it over to our express server
-                    $inc: { [choice] : 1 }, //Mongo operator -- put logic inside query. Find the choice property and increment (inc) by 1
-                    //using [] around choice (key interpolation) it will pull in the value of the choice variable
-                    $set: { 'recipients.$.responded': true }, //$ here refers to recipient returned from elemMatch from the original query above
-                    lastResponded: new Date()
-                }).exec(); 
-            })
-            .value();
-
+                }
+            }, {
+                //update properties with fields in this object without ever pulling it over to our express server
+                $inc: { [choice] : 1 }, //Mongo operator -- put logic inside query. Find the choice property and increment (inc) by 1
+                //using [] around choice (key interpolation) it will pull in the value of the choice variable
+                $set: { 'recipients.$.responded': true }, //$ here refers to recipient returned from elemMatch from the original query above
+                lastResponded: new Date()
+            }).exec(); 
+        })
+        .value();
+        
         res.send({}); //notify sendgrid that we are good
     });
-
+    
     app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
         const { surveyName, subject, greeting, body, question, yesText, noText, goodbye, signature, fromEmail, recipients } = req.body;
         //create survey
@@ -95,7 +90,7 @@ module.exports = app => {
             _user: req.user.id,
             dateSent: Date.now()
         }); 
-
+        
         //attempt to create and send email
         const mailer = new Mailer(survey, surveyTemplate(survey));
         try {
@@ -114,6 +109,46 @@ module.exports = app => {
             res.status(422).send(err);
         }
         //survey handler complete
+    });
+    
+    app.post('/api/surveys/draft', requireLogin, async (req, res) => {
+        const { surveyName, subject, greeting, body, question, yesText, noText, goodbye, signature, fromEmail, recipients } = req.body;
+        
+        const survey = new Survey({
+            surveyName,
+            subject, 
+            greeting,
+            body,
+            question,
+            yesText, 
+            noText,
+            goodbye,
+            signature,
+            fromEmail,
+            recipients: recipients.split(',').map(email => ({ email: email.trim() })),
+            totalRecipients: recipients.split(',').map(email => ({ email: email.trim() })).length,
+            _user: req.user.id,
+            dateSent: Date.now()
+        }); 
+        try {
+            await survey.save();
+            res.send(survey);
+        } catch (err) {
+            res.status(422).send(err);
+        }
+    });
+    
+    app.delete('/api/surveys/:surveyId', requireLogin, async (req, res) => {
+        try {
+            await Survey.deleteOne({ _id: req.params.surveyId });
+        } catch (err) {
+            res.send(err);
+        }
+        const surveys = await Survey.find({ _user: req.user.id })
+            .sort({dateSent: -1})
+            .select({recipients: false});
+    
+        res.send(surveys);
     });
 };
 

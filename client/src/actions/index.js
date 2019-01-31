@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_USER, FETCH_SURVEYS, DELETE_SURVEY } from './types';
+import { FETCH_USER, FETCH_SURVEYS, FETCH_SURVEY } from './types';
 
 //redux thunk inspects the value we return from an action creator 
 //if it sees that we are returning a function instead of an action Redux thunk will
@@ -21,12 +21,22 @@ export const submitSurvey = (values, history) => async dispatch => {
     dispatch({ type: FETCH_USER, payload: data});
 };
 
+export const saveSurvey = (values) => async dispatch => {
+    const { data } = await axios.post('/api/surveys/draft', values);
+    dispatch({ type: FETCH_SURVEY, payload: data});
+}
+
 export const fetchSurveys = () => async dispatch => {
     const { data } = await axios.get('/api/surveys');
     dispatch({ type: FETCH_SURVEYS, payload: data }); //payload will be an array of current user's surveys 
 };
 
+export const fetchSurvey = (surveyId) => async dispatch => {
+   const { data } = await axios.get(`/api/surveys/${surveyId}`)
+   dispatch({ type: FETCH_SURVEY, payload: data });
+};
+
 export const deleteSurvey = (surveyId) => async dispatch => {
     const { data } = await axios.delete(`/api/surveys/${surveyId}`);
-    dispatch({ type: DELETE_SURVEY, payload: data });
+    dispatch({ type: FETCH_SURVEYS, payload: data });
 }
