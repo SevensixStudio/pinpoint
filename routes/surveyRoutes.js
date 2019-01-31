@@ -22,8 +22,7 @@ module.exports = app => {
     });
 
     app.get('/api/surveys/:surveyId', requireLogin, async (req, res) => {
-        const survey = await Survey.findOne({ _id: req.params.surveyId })
-            .select({ recipients: false });
+        const survey = await Survey.findOne({ _id: req.params.surveyId });
         res.send(survey);
     });
 
