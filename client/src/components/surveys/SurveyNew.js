@@ -11,7 +11,7 @@ const SurveyNew = ({ submitSurvey, history }) => {
 
         return (
             <div className="surveyNew-container">
-                <Header />
+                <Header linkText="Dashboard" linkHref="/dashboard" />
                 <SurveyFormWizard onSubmit={(formValues) => submitSurvey(formValues, history)} />
             </div>
         );

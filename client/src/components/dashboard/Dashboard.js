@@ -50,7 +50,7 @@ class Dashboard extends Component {
         console.log(this.props.auth);
         return (
             <div className="dashboard-container Dashboard">
-                <Header />
+                <Header linkText="Create Survey" linkHref="/surveys/new" />
                 {this.renderContent()}
             </div>
         );

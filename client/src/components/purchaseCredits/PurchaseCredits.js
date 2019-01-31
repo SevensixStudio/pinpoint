@@ -52,7 +52,7 @@ class PurchaseCredits extends Component {
     render() {
         return (
             <div>
-                <Header />
+                <Header linkText="Dashboard" linkHref="/dashboard" />
                 <div className="PurchaseCredits">
                     <PageHeader text="Buy Credits" />
                     <div className="PurchaseCredits__currentCredits">Available Credits: 7</div>
