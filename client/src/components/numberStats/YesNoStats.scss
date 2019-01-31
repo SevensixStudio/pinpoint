@@ -1,0 +1,19 @@
+@import '../../index.scss';
+
+.YesNoStats {
+    text-align: end;
+
+    &__label {
+        font-size: 1.2rem;
+        color: $color-grey-dark-2;
+    }
+
+    &__number {
+        font-size: 3rem;
+        color: $color-primary-dark;
+    }
+
+    .number-1 {
+        margin-bottom: 2rem;
+    }
+}

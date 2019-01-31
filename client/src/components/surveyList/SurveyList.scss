@@ -37,25 +37,12 @@
 
         &--numbers {
             grid-row: 1 / span 1;
-            text-align: end;
-
-            .label {
-                font-size: 1.2rem;
-                color: $color-grey-dark-2;
-            }
-
-            .number {
-                font-size: 3rem;
-                color: $color-primary-dark;
-            }
-
-            .number-1 {
-                margin-bottom: 2rem;
-            }
+            grid-column: 2 / span 1;
         }
 
         &--graph {
             grid-row: 1 / span 1;
+            grid-column: 3 / span 1;
             width: 15rem;
             align-self: center;
             justify-self: center;
