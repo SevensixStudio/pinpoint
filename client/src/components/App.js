@@ -37,6 +37,7 @@ class App extends Component {
                         <Route exact path="/" component={this.props.auth === false ? Landing : Dashboard} />
                         <ProtectedRoute authed={this.props.auth !== false} exact path="/dashboard" component={Dashboard} />
                         <ProtectedRoute authed={this.props.auth !== false} path="/surveys/new" component={SurveyNew} />
+                        <ProtectedRoute authed={this.props.auth !== false} path="/surveys/preview/:id" component={SurveyNew} />
                         <ProtectedRoute authed={this.props.auth !== false} path="/purchase" component={PurchaseCredits} />
                         <Route path="/login" component={Login} />
                         <Route path="/signup" component={Login} />

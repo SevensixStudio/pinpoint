@@ -1,0 +1,77 @@
+@import '../../index.scss';
+
+.SurveyPreview {
+    margin: 6rem 10rem 2rem 10rem;
+
+    &__preview {
+        margin-top: 3rem;
+        background-color: $color-grey-light-2;
+        color: $color-grey-dark-4;
+        padding: 2rem;
+
+        display: grid;
+        grid-template-columns: 1fr max-content;
+        grid-column-gap: 6rem;
+
+        &--email {
+
+            > .emailbox {
+                background-color: $color-white;
+                // width: max-content;
+
+                >  p {
+                    padding: .2rem 0 .4rem 1rem;
+                }
+
+                > p:first-child {
+                    border-bottom: 1px solid $color-grey-light-2;
+                   // display: block;
+                }
+            }
+
+            > .emailBody {
+                margin-top: .5rem;
+                padding: 2.5rem 2rem;
+                background-color: $color-white;
+
+                > * {
+                    margin-bottom: 2rem;
+                }
+
+                > .question {
+                    font-weight: bold;
+                    font-size: 1.7rem;
+                    text-align: center;
+                }
+
+                > .answerBox {
+                    text-align: center;
+                    margin-bottom: 3rem;
+
+                    > button {
+                        margin: 1rem;
+                    }
+
+                    > button:first-child {
+                        margin-right: 1rem;
+                    }
+                }
+
+                > .signature {
+                    font-weight: bold;
+                }
+            }
+
+            
+        }
+
+        &--stats {
+            width: 20rem;
+       
+            > .numbers {
+                margin: 2rem;
+            
+            }
+        }
+    }
+}
