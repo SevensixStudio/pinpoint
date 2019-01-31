@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import surveySteps from './surveySteps';
+import PageHeader from '../../pageHeader/PageHeader';
 import WizardStep from './WizardStep';
 
 import '../../../index.scss';
@@ -32,10 +33,7 @@ class SurveyFormWizard extends Component {
         const { page } = this.state;
         return (
             <div className="SurveyFormWizard">
-              <div className="SurveyFormWizard__title">
-                Create a new survey
-                <hr />
-              </div>
+              <PageHeader text="Create a new survey" />
               <div className="SurveyFormWizard__form">
                 <WizardStep step={surveySteps[page]} onSubmit={page === NUMBER_OF_PAGES ? onSubmit : this.nextPage} previousPage={this.previousPage} stepNumber={page} numberOfSteps={NUMBER_OF_PAGES} />
               </div>

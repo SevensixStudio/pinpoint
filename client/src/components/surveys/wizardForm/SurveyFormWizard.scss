@@ -3,23 +3,6 @@
 .SurveyFormWizard {
     margin: 6rem 10rem 2rem 10rem;
     
-
-    &__title {
-        color: $color-grey-dark-2;
-        font-size: 2.2rem;
-        text-transform: uppercase;
-        font-weight: 300;
-
-        hr {
-            margin-top: 1rem;
-            grid-column: 1 / -1;
-            background-color: $color-grey-dark-2;
-            display: block;
-            height: 1.2px;
-            border: 0;
-        }
-    }
-
     &__form {
         margin-top: 3rem;
     }

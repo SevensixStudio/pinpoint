@@ -1,0 +1,18 @@
+@import '../../index.scss';
+
+.PageHeader {
+
+    &__text {
+        color: $color-grey-dark-2;
+        font-size: 2.2rem;
+        text-transform: uppercase;
+        font-weight: 300;
+    }
+
+    &__line {
+        background-color: $color-grey-dark-2;
+        display: block;
+        height: 1.2px;
+        border: 0;
+    }
+}
