@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchSurvey, submitSurvey } from '../../actions';
@@ -17,14 +18,26 @@ class SurveyPreview extends Component {
     }
 
     renderContent(survey) {
-        if (survey === null) {
+        console.log(survey);
+        if (_.isEmpty(survey)) {
             return (
                 <PageHeader text="Loading..." />
             );
         }
         return [
-            <PageHeader text={survey.surveyName} />,
+            <PageHeader text={`${survey.surveyName} - Preview`} />,
             <div className="SurveyPreview__preview">
+                <div className="SurveyPreview__preview--toolbar">
+                    <div>
+                        <i class="far fa-edit"></i>
+                    </div>
+                    <div>
+                        <i class="far fa-envelope"></i>
+                    </div>
+                    <div>
+                        <i class="far fa-trash-alt"></i>
+                    </div>
+                </div>
                 <div className="SurveyPreview__preview--email">
                     <div className="emailbox">
                         <p>From: {survey.fromEmail}</p>
@@ -52,14 +65,32 @@ class SurveyPreview extends Component {
                 </div>
             </div>,
             <div className="SurveyPreview__details">
-                <p>Date Created: </p>
-                <p>Date Sent: </p>
-                <p>Date Last reply: </p>
-                <p>Total recipients</p>
-                <p>Recipients - toggle to see</p>
-                <p>Edit</p>
-                <p>Delete</p>
-                <p>Send</p>
+                <div className="SurveyPreview__details--info">
+                    <div className="SurveyPreview__details--dates">
+                        <p>Date Created: {new Date(survey.dateSent).toLocaleDateString() + " " + new Date(survey.dateSent).toLocaleTimeString()}</p>
+                        <p>Date Sent: {new Date(survey.dateSent).toLocaleDateString() + " " + new Date(survey.dateSent).toLocaleTimeString()}</p>
+                        <p>Date Last reply: {survey.lastResponded ? (new Date(survey.lastResponded).toLocaleDateString() + " at " + new Date(survey.lastResponded).toLocaleTimeString()) : 'NA'}</p>
+                    </div>
+                    <div className="SurveyPreview__details--recipients">
+                        <p>Total recipients: {survey.totalRecipients}</p>
+                        <button className="login-btn">Click to view recipients</button>
+                        <div className="recipientsList">
+                            <p>{survey.recipients.map(e => e.email).join(", ")}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div className="SurveyPreview__details--toolbar SurveyPreview__preview--toolbar">
+                    <div>
+                        <i class="far fa-edit"></i>
+                    </div>
+                    <div>
+                        <i class="far fa-envelope"></i>
+                    </div>
+                    <div>
+                        <i class="far fa-trash-alt"></i>
+                    </div>
+                </div>
             </div>
         ];
     }
@@ -80,3 +111,5 @@ function mapStateToProps({ survey }) {
 }
 
 export default connect(mapStateToProps, { fetchSurvey, submitSurvey })(SurveyPreview);
+
+{/* <p>{(survey.recipients).map(function(recipient){ return recipient.email; }).join(', ')}</p> */}
