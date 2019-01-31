@@ -9,6 +9,7 @@ import '../../../index.scss';
 import './WizardStep.scss';
 
 const WizardStep = ({step, handleSubmit, stepNumber, numberOfSteps, previousPage, pristine, submitting}) => {
+    
     return (
         <div className="WizardStep">
             <h3 className="WizardStep__title">{step.title}</h3>

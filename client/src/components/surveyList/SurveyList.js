@@ -8,14 +8,12 @@ import './SurveyList.scss';
 
 class SurveyList extends Component {
     componentDidMount() {
-        console.log(this.props.auth);
         if (this.props.auth) {
             this.props.fetchSurveys();
         }
     }
 
     renderSurveys() {
-        console.log(this.props.surveys);
         if (this.props.surveys.length === 0) {
             return <p className="SurveyList__empty">You haven't created any surveys yet. <a className="inline-link" href="/surveys/new">Create one now!</a></p>;
         }
@@ -23,7 +21,7 @@ class SurveyList extends Component {
             return (
                 <div key={survey._id} className="SurveyList__item">
                     <div className="SurveyList__item--titleBox">
-                        <h3>{survey.title}</h3>
+                        <h3>{survey.surveyName}</h3>
                         <p className="subject">Subject: {survey.subject}</p>
                         <p className="date">Created on: {new Date(survey.dateSent).toLocaleDateString() + " " + new Date(survey.dateSent).toLocaleTimeString()}</p>
                         <p className="date">Sent on: {new Date(survey.dateSent).toLocaleDateString() + " " + new Date(survey.dateSent).toLocaleTimeString()}</p>
@@ -39,7 +37,7 @@ class SurveyList extends Component {
                     </div>
                     <div className="SurveyList__item--lastResponse">
                         <hr />
-                        <p className="date">Last response recieved: {new Date(survey.lastResponded).toLocaleDateString() + " at " + new Date(survey.lastResponded).toLocaleTimeString()}</p>
+                        <p className="date">Last response recieved: {survey.lastResponded ? (new Date(survey.lastResponded).toLocaleDateString() + " at " + new Date(survey.lastResponded).toLocaleTimeString()) : 'NA'}</p>
                     </div>
                 </div>
             );

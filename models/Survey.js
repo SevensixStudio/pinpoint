@@ -3,13 +3,13 @@ const { Schema } = mongoose;
 const RecipientSchema = require('./Recipient');
 
 const surveySchema = new Schema({
-    title: String,
+    surveyName: String,
     subject: String,
     greeting: String,
     body: String,
     question: String,
-    yesText: String, 
-    noText: String,
+    yesText: { type: String, default: 'Yes' }, 
+    noText: { type: String, default: 'No' },
     goodbye: String,
     signature: String,
     fromEmail: String,

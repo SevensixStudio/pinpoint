@@ -63,10 +63,10 @@ module.exports = app => {
     });
 
     app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
-        const { title, subject, greeting, body, question, yesText, noText, goodbye, signature, fromEmail, recipients } = req.body;
+        const { surveyName, subject, greeting, body, question, yesText, noText, goodbye, signature, fromEmail, recipients } = req.body;
         //create survey
         const survey = new Survey({
-            title,
+            surveyName,
             subject, 
             greeting,
             body,
@@ -77,7 +77,7 @@ module.exports = app => {
             signature,
             fromEmail,
             recipients: recipients.split(',').map(email => ({ email: email.trim() })),
-            totalRecipients: recipients.length,
+            totalRecipients: recipients.split(',').map(email => ({ email: email.trim() })).length,
             _user: req.user.id,
             dateSent: Date.now()
         }); 

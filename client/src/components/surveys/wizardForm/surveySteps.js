@@ -20,8 +20,8 @@ export default {
         message: "Now for the most important part -- What question do you want to ask your customers? Remember it has to be a yes or no question. You can also customize the 'yes' and 'no' responses if you like.",
         fields: [
             { label: 'Question', name: 'question', errorMessage: 'Please fill out the question field', type: 'textarea' },
-            { label: 'Yes', name: 'yes', type: 'text' },
-            { label: 'No', name: 'no', type: 'text' }
+            { label: 'Yes', name: 'yesText', type: 'text' },
+            { label: 'No', name: 'noText', type: 'text' }
         ]
     },
     4: {
@@ -49,8 +49,8 @@ export default {
             { label: 'Greeting', name: 'greeting', errorMessage: 'Please add a greeting', type: 'text' },
             { label: 'Email Body', name: 'body', errorMessage: 'Please add some content to your email', type: 'textarea' },
             { label: 'Question', name: 'question', errorMessage: 'Please fill out the question field', type: 'textarea' },
-            { label: 'Yes', name: 'yes', type: 'text' },
-            { label: 'No', name: 'no', type: 'text' },
+            { label: 'Yes', name: 'yesText', type: 'text' },
+            { label: 'No', name: 'noText', type: 'text' },
             { label: 'Goodbye message', name: 'goodbye', errorMessage: 'Please add a goodbye message', type: 'text' },
             { label: 'Signature', name: 'signature', errorMessage: 'Please tell your recipients who this email is from', type: 'text' },
             { label: 'Recipients List', name: 'recipients', errorMessage: 'You must enter at least one email address', type: 'textarea'},
