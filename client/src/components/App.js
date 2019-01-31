@@ -6,7 +6,7 @@ import * as actions from '../actions';
 
 import Landing from './landing/Landing';
 import Dashboard from './dashboard/Dashboard';
-import PurchaseCredits from './PurchaseCredits';
+import PurchaseCredits from './purchaseCredits/PurchaseCredits';
 import SurveyNew from './surveys/SurveyNew';
 import Login from './login/Login';
 
