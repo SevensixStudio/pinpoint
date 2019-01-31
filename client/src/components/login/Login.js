@@ -46,9 +46,9 @@ class Login extends Component {
                         <a href="/auth/google" className="login-btn"><i className="fab fa-google"></i> Sign {isSignUp ? 'up ' : 'in '} with Google</a>
                         <a href="/auth/facebook" className="login-btn"><i className="fab fa-facebook-f"></i> Sign {isSignUp ? 'up ' : 'in '} with Facebook</a>
                     </div>
-                    {isSignUp ? null : (
-                        <p className="Login__create-account">Don't have an account? &nbsp;<a href="/api/logoutsignup" className="inline-link">Create one</a></p>
-                    )}
+                    {isSignUp ? (<p className="Login__create-account">Already have an account? &nbsp;<a href="/login" className="inline-link">Login</a></p>) 
+                        : (<p className="Login__create-account">Don't have an account? &nbsp;<a href="/api/logoutsignup" className="inline-link">Create one</a></p>)
+                    }
                 </div>
             </div>
         )

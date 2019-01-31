@@ -15,12 +15,26 @@ module.exports = app => {
         //we don't want to pull out all of the recipients because we won't be showing any of these email address
         //solution? whitelist the reciepient field using Query#select 
         const surveys = await Survey.find({ _user: req.user.id })
+            .sort({dateSent: -1})
             .select({ recipients: false }); //exclude recipients property
         res.send(surveys);
     });
 
     app.get('/api/surveys/:surveyId/:choice', (req, res) => {
         res.send('Thank you for your feedback!');
+    });
+
+    app.delete('/api/surveys/:surveyId', requireLogin, async (req, res) => {
+        try {
+            await Survey.deleteOne({ _id: req.params.surveyId });
+        } catch (err) {
+            res.send(err);
+        }
+        const surveys = await Survey.find({ _user: req.user.id })
+            .sort({dateSent: -1})
+            .select({recipients: false});
+
+        res.send(surveys);
     });
 
     app.post('/api/surveys/webhooks', (req, res) => {
