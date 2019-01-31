@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchSurveys } from '../../actions';
+import { fetchSurveys, deleteSurvey } from '../../actions';
 import CircleGraph from '../circleGraph/CircleGraph';
 
 import '../../index.scss';
@@ -17,7 +17,7 @@ class SurveyList extends Component {
         if (this.props.surveys.length === 0) {
             return <p className="SurveyList__empty">You haven't created any surveys yet. <a className="inline-link" href="/surveys/new">Create one now!</a></p>;
         }
-        return this.props.surveys.reverse().map(survey => {
+        return this.props.surveys.map(survey => {
             return (
                 <div key={survey._id} className="SurveyList__item">
                     <div className="SurveyList__item--titleBox">
@@ -39,6 +39,20 @@ class SurveyList extends Component {
                         <hr />
                         <p className="date">Last response recieved: {survey.lastResponded ? (new Date(survey.lastResponded).toLocaleDateString() + " at " + new Date(survey.lastResponded).toLocaleTimeString()) : 'NA'}</p>
                     </div>
+                    <div key={survey._id} className="SurveyList__item--toolsPanel" id="tools">
+                        <div className="SurveyList__item--toolsPanel--action">
+                            <a href="#"><i class="far fa-eye"></i></a>
+                        </div>
+                        <div className="SurveyList__item--toolsPanel--action">
+                            <a href="#"><i class="far fa-envelope"></i></a>
+                        </div>
+                        <div className="SurveyList__item--toolsPanel--action">
+                            <a href="#"><i class="far fa-edit"></i></a>
+                        </div>
+                        <div className="SurveyList__item--toolsPanel--action" onClick={() => this.props.deleteSurvey(survey._id)}>
+                            <a href="#"><i class="far fa-trash-alt"></i></a>
+                        </div>
+                    </div>
                 </div>
             );
         });
@@ -57,4 +71,4 @@ function mapStateToProps({ surveys, auth }) {
     return { surveys, auth };
 }
 
-export default connect(mapStateToProps, { fetchSurveys })(SurveyList);
+export default connect(mapStateToProps, { fetchSurveys, deleteSurvey })(SurveyList);
