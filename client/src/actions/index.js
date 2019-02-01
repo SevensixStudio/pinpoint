@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_USER, FETCH_SURVEYS, FETCH_SURVEY } from './types';
+import { FETCH_USER, FETCH_SURVEYS, FETCH_SURVEY, FETCH_FORM_FIELDS } from './types';
 
 //redux thunk inspects the value we return from an action creator 
 //if it sees that we are returning a function instead of an action Redux thunk will
@@ -27,13 +27,37 @@ export const saveSurvey = (values, history) => async dispatch => {
     dispatch({ type: FETCH_SURVEY, payload: data});
 }
 
+export const updateSurvey = (id, values, history) => async dispatch => {
+    const { data } = await axios.post(`/api/surveys/update/${id}`, values);
+    history.push(`/surveys/preview/${data._id}`);
+    dispatch({ type: FETCH_SURVEY, payload: data});
+}
+
+export const fetchFieldsFromSurvey = (id) => async dispatch => {
+    const { data } = await axios.get(`/api/surveys/${id}`);
+    const fields = {
+        body: data.body,
+        fromEmail: data.fromEmail,
+        goodbye: data.goodbye,
+        greeting: data.greeting,
+        noText: data.noText,
+        question: data.question,
+        recipients: data.recipients.map(e => e.email).join(", "),
+        signature: data.signature,
+        subject: data.subject,
+        surveyName: data.surveyName,
+        yesText: data.yesText
+    }
+    dispatch({ type: FETCH_FORM_FIELDS, payload: fields });
+}
+
 export const fetchSurveys = () => async dispatch => {
     const { data } = await axios.get('/api/surveys');
     dispatch({ type: FETCH_SURVEYS, payload: data }); //payload will be an array of current user's surveys 
 };
 
 export const fetchSurvey = (surveyId) => async dispatch => {
-   const { data } = await axios.get(`/api/surveys/${surveyId}`)
+   const { data } = await axios.get(`/api/surveys/${surveyId}`);
    dispatch({ type: FETCH_SURVEY, payload: data });
 };
 
