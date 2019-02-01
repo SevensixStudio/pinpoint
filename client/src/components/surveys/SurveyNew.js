@@ -8,13 +8,19 @@ import SurveyFormWizard from './wizardForm/SurveyFormWizard';
 import '../../index.scss';
 import SurveyPreview from './SurveyPreview';
 
-const SurveyNew = ({ match: { path, params }, saveSurvey, history }) => {
+const test = () => {
+    console.log("FUCK");
+}
+
+const SurveyNew = ({ match: { path, params }, saveSurvey, updateSurvey, history }) => {
         return (
             <div className="surveyNew-container">
                 <Header linkText="Dashboard" linkHref="/dashboard" />
                 {(() => {
                     if (path === '/surveys/new') {
-                        return <SurveyFormWizard onSubmit={(formValues) => saveSurvey(formValues, history)} />;
+                        return <SurveyFormWizard edit={false} onSubmit={(formValues) => saveSurvey(formValues, history)} />;
+                    } else if (path.includes("edit")) {
+                        return <SurveyFormWizard edit={true} onSubmit={(formValues) => updateSurvey(params.id, formValues, history)} surveyId={params.id} />
                     }
                     return <SurveyPreview surveyId={params.id} history={history} />     
                 })()}

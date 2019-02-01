@@ -1,8 +1,12 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux'
+import { fetchFieldsFromSurvey } from '../../../actions';
 import surveySteps from './surveySteps';
 import PageHeader from '../../pageHeader/PageHeader';
 import WizardStep from './WizardStep';
+
 
 import '../../../index.scss';
 import './SurveyFormWizard.scss';
@@ -16,7 +20,13 @@ class SurveyFormWizard extends Component {
         this.nextPage = this.nextPage.bind(this);
         this.previousPage = this.previousPage.bind(this);
         this.state = {
-          page: 1
+          page: this.props.edit ? NUMBER_OF_PAGES : 1 
+        }
+      }
+
+      componentDidMount() {
+        if (this.props.surveyId) {
+          this.props.fetchFieldsFromSurvey(this.props.surveyId);
         }
       }
 
@@ -33,17 +43,24 @@ class SurveyFormWizard extends Component {
         const { page } = this.state;
         return (
             <div className="SurveyFormWizard">
-              <PageHeader text="Create a new survey" />
+              <PageHeader text={(this.props.edit && !_.isEmpty(this.props.state.formFields)) ? "Edit - " + this.props.state.formFields.surveyName: "Create a new survey" } />
               <div className="SurveyFormWizard__form">
-                <WizardStep step={surveySteps[page]} onSubmit={page === NUMBER_OF_PAGES ? onSubmit : this.nextPage} previousPage={this.previousPage} stepNumber={page} numberOfSteps={NUMBER_OF_PAGES} />
+                <WizardStep step={surveySteps[page]} isSaved={this.props.edit} onSubmit={page === NUMBER_OF_PAGES ? onSubmit : this.nextPage} previousPage={this.previousPage} stepNumber={page} numberOfSteps={NUMBER_OF_PAGES} />
               </div>
           </div>
         )
       }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    state: state
+  }
+}
+
+
 SurveyFormWizard.propTypes = {
     onSubmit: PropTypes.func.isRequired
 }
   
-export default SurveyFormWizard;
+export default connect(mapStateToProps, { fetchFieldsFromSurvey })(SurveyFormWizard);

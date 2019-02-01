@@ -18,7 +18,6 @@ class SurveyList extends Component {
         if (this.props.surveys.length === 0) {
             return <p className="SurveyList__empty">You haven't created any surveys yet. <a className="inline-link" href="/surveys/new">Create one now!</a></p>;
         }
-        console.log(this.props.surveys[0]);
         return this.props.surveys.map(survey => {
             return (
                 <div key={survey._id} className="SurveyList__item">

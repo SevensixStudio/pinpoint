@@ -14,7 +14,6 @@ import './SurveyPreview.scss';
 class SurveyPreview extends Component {
     constructor(props) {
         super(props);
-        console.log(this.state);
         this.state = {
             showRecipients: false
         }
@@ -41,7 +40,7 @@ class SurveyPreview extends Component {
             return (
                 <div className={className}>
                     <div>
-                        <i class="far fa-edit"></i>
+                        <a href={`/surveys/edit/${this.props.surveyId}`}><i class="far fa-edit"></i></a>
                     </div>
                     <div onClick={() => this.props.submitSurvey(this.props.surveyId, this.props.history)}>
                         <i class="far fa-envelope"></i>
@@ -117,7 +116,6 @@ class SurveyPreview extends Component {
     }
 
     render() {
-        console.log(this.props);
         const  survey  = this.props.survey;
         return (
             <div className="SurveyPreview">
