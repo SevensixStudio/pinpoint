@@ -30,7 +30,7 @@ const WizardStep = ({step, handleSubmit, stepNumber, numberOfSteps, previousPage
                             } else if (stepNumber === numberOfSteps) {
                             return [
                                 <button className="btn button--previous" key="1" type="button" onClick={previousPage}><i className="fas fa-fa-chevron-left"></i> Previous</button>,
-                                <button className="btn button--submit" key="2" type="submit" disabled={pristine || submitting}>Send <i className="far fa-envelope"></i></button>
+                                <button className="btn button--submit" key="2" type="submit" disabled={pristine || submitting}>Save &amp; preview <i className="far fa-save"></i></button>
                             ];
                         } else {
                         return [

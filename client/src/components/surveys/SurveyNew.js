@@ -8,15 +8,15 @@ import SurveyFormWizard from './wizardForm/SurveyFormWizard';
 import '../../index.scss';
 import SurveyPreview from './SurveyPreview';
 
-const SurveyNew = ({ match: { path, params }, submitSurvey, history }) => {
+const SurveyNew = ({ match: { path, params }, saveSurvey, history }) => {
         return (
             <div className="surveyNew-container">
                 <Header linkText="Dashboard" linkHref="/dashboard" />
                 {(() => {
                     if (path === '/surveys/new') {
-                        return <SurveyFormWizard onSubmit={(formValues) => submitSurvey(formValues, history)} />;
+                        return <SurveyFormWizard onSubmit={(formValues) => saveSurvey(formValues, history)} />;
                     }
-                    return <SurveyPreview surveyId={params.id} />     
+                    return <SurveyPreview surveyId={params.id} history={history} />     
                 })()}
             </div>
         );

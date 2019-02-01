@@ -25,8 +25,8 @@ class SurveyList extends Component {
                     <div className="SurveyList__item--titleBox">
                         <h3>{survey.surveyName}</h3>
                         <p className="subject">Subject: {survey.subject}</p>
-                        <p className="date">Created on: {new Date(survey.dateSent).toLocaleDateString() + " " + new Date(survey.dateSent).toLocaleTimeString()}</p>
-                        <p className="date">Sent on: {new Date(survey.dateSent).toLocaleDateString() + " " + new Date(survey.dateSent).toLocaleTimeString()}</p>
+                        <p className="date">Created on: {new Date(survey.dateCreated).toLocaleDateString() + " " + new Date(survey.dateCreated).toLocaleTimeString()}</p>
+                        <p className="date">Sent on: {survey.dateSent ? (new Date(survey.dateSent).toLocaleDateString() + " " + new Date(survey.dateSent).toLocaleTimeString()) : "This survey has not been sent yet"}</p>
                     </div>
                     <YesNoStats className="SurveyList__item--numbers" yesCount={survey.yes} noCount={survey.no} total={survey.totalRecipients} />
                     <div className="SurveyList__item--graph">
@@ -34,7 +34,7 @@ class SurveyList extends Component {
                     </div>
                     <div className="SurveyList__item--lastResponse">
                         <hr />
-                        <p className="date">Last response recieved: {survey.lastResponded ? (new Date(survey.lastResponded).toLocaleDateString() + " at " + new Date(survey.lastResponded).toLocaleTimeString()) : 'NA'}</p>
+                        <p className="date">Last response recieved: {survey.lastResponded ? (new Date(survey.lastResponded).toLocaleDateString() + " at " + new Date(survey.lastResponded).toLocaleTimeString()) : 'No one has responded to your survey yet'}</p>
                     </div>
                     <div key={survey._id} className="SurveyList__item--toolsPanel" id="tools">
                         <div className="SurveyList__item--toolsPanel--action">

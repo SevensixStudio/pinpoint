@@ -83,7 +83,11 @@
        
             > .numbers {
                 margin: 2rem;
-            
+            }
+
+            > button {
+               display: block;
+                margin: 0 auto;
             }
         }
     }

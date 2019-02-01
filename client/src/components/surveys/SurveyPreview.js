@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchSurvey, submitSurvey } from '../../actions';
+import { fetchSurvey, submitSurvey, deleteSurvey } from '../../actions';
 
 import PageHeader from '../pageHeader/PageHeader';
 import YesNoStats from '../numberStats/YesNoStats';
@@ -12,13 +12,56 @@ import './SurveyPreview.scss';
 
 
 class SurveyPreview extends Component {
-
+    constructor(props) {
+        super(props);
+        console.log(this.state);
+        this.state = {
+            showRecipients: false
+        }
+    }
+      
     componentDidMount() {
         this.props.fetchSurvey(this.props.surveyId);
     }
 
+    toggleRecipientsList() {
+        this.setState({ showRecipients: this.state.showRecipients ? false : true});
+    }
+
+    renderRecipients(recipients) {
+        return (
+            <div className="recipientsList">
+                <p>{recipients.map(e => e.email).join(", ")}</p>
+            </div>
+        )
+    }
+
+    renderToolbar(isDraft, className) {
+        if (isDraft) {
+            return (
+                <div className={className}>
+                    <div>
+                        <i class="far fa-edit"></i>
+                    </div>
+                    <div onClick={() => this.props.submitSurvey(this.props.surveyId, this.props.history)}>
+                        <i class="far fa-envelope"></i>
+                    </div>
+                    <div onClick={() => this.props.deleteSurvey(this.props.surveyId, this.props.history)}>
+                        <i class="far fa-trash-alt"></i>
+                    </div>
+                </div>
+            );
+        }
+        return (
+            <div className={className}>
+                <div onClick={() => this.props.deleteSurvey(this.props.surveyId, this.props.history)}>
+                    <i class="far fa-trash-alt"></i>
+                </div>
+            </div>
+        )
+    }
+
     renderContent(survey) {
-        console.log(survey);
         if (_.isEmpty(survey)) {
             return (
                 <PageHeader text="Loading..." />
@@ -27,17 +70,7 @@ class SurveyPreview extends Component {
         return [
             <PageHeader text={`${survey.surveyName} - Preview`} />,
             <div className="SurveyPreview__preview">
-                <div className="SurveyPreview__preview--toolbar">
-                    <div>
-                        <i class="far fa-edit"></i>
-                    </div>
-                    <div>
-                        <i class="far fa-envelope"></i>
-                    </div>
-                    <div>
-                        <i class="far fa-trash-alt"></i>
-                    </div>
-                </div>
+                {this.renderToolbar(survey.isDraft, "SurveyPreview__preview--toolbar")}
                 <div className="SurveyPreview__preview--email">
                     <div className="emailbox">
                         <p>From: {survey.fromEmail}</p>
@@ -61,36 +94,24 @@ class SurveyPreview extends Component {
                     </div> 
                     <div className="numbers"> 
                         <YesNoStats yesCount={survey.yes} noCount={survey.no} total={survey.totalRecipients}/>
-                    </div> 
+                    </div>
+                    {survey.isDraft ? (<button className="btn btn--yellow"><i class="far fa-envelope"></i> Send now</button>) : null} 
                 </div>
             </div>,
             <div className="SurveyPreview__details">
                 <div className="SurveyPreview__details--info">
                     <div className="SurveyPreview__details--dates">
-                        <p>Date Created: {new Date(survey.dateSent).toLocaleDateString() + " " + new Date(survey.dateSent).toLocaleTimeString()}</p>
-                        <p>Date Sent: {new Date(survey.dateSent).toLocaleDateString() + " " + new Date(survey.dateSent).toLocaleTimeString()}</p>
-                        <p>Date Last reply: {survey.lastResponded ? (new Date(survey.lastResponded).toLocaleDateString() + " at " + new Date(survey.lastResponded).toLocaleTimeString()) : 'NA'}</p>
+                        <p>Date Created: {new Date(survey.dateCreated).toLocaleDateString() + " " + new Date(survey.dateCreated).toLocaleTimeString()}</p>
+                        {survey.isDraft ? (<p>This survey has not been sent yet</p>) : (<p>Date Sent: {new Date(survey.dateSent).toLocaleDateString() + " " + new Date(survey.dateSent).toLocaleTimeString()}</p>)}
+                        {survey.isDraft ? null : (survey.lastResponded ? (<p>Date Last reply: {new Date(survey.lastResponded).toLocaleDateString() + " at " + new Date(survey.lastResponded).toLocaleTimeString()}</p>) : (<p>No one has responded to your survey yet.</p>))}
                     </div>
                     <div className="SurveyPreview__details--recipients">
                         <p>Total recipients: {survey.totalRecipients}</p>
-                        <button className="login-btn">Click to view recipients</button>
-                        <div className="recipientsList">
-                            <p>{survey.recipients.map(e => e.email).join(", ")}</p>
-                        </div>
+                        <button className="login-btn" onClick={() => this.toggleRecipientsList()}>Click to view recipients</button>
+                        {this.state.showRecipients ? this.renderRecipients(survey.recipients) : null}
                     </div>
                 </div>
-                
-                <div className="SurveyPreview__details--toolbar SurveyPreview__preview--toolbar">
-                    <div>
-                        <i class="far fa-edit"></i>
-                    </div>
-                    <div>
-                        <i class="far fa-envelope"></i>
-                    </div>
-                    <div>
-                        <i class="far fa-trash-alt"></i>
-                    </div>
-                </div>
+                {this.renderToolbar(survey.isDraft, "SurveyPreview__details--toolbar SurveyPreview__preview--toolbar")}
             </div>
         ];
     }
@@ -106,10 +127,8 @@ class SurveyPreview extends Component {
     }
 }
   
-function mapStateToProps({ survey }) {
-    return { survey };
+function mapStateToProps({ survey }, state) {
+    return { survey, state };
 }
 
-export default connect(mapStateToProps, { fetchSurvey, submitSurvey })(SurveyPreview);
-
-{/* <p>{(survey.recipients).map(function(recipient){ return recipient.email; }).join(', ')}</p> */}
+export default connect(mapStateToProps, { fetchSurvey, submitSurvey, deleteSurvey })(SurveyPreview);
