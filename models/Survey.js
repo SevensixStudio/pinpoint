@@ -20,6 +20,7 @@ const surveySchema = new Schema({
     _user: { type: Schema.Types.ObjectId, ref: 'User' }, //reference to another model instance
     dateCreated: Date,  
     dateSent: Date,
+    dateUpdated: Date,
     lastResponded: Date,
     isDraft: { type: Boolean, default: true }
 });
