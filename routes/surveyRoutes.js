@@ -70,26 +70,13 @@ module.exports = app => {
         res.send({}); //notify sendgrid that we are good
     });
     
-    app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
-        const { surveyName, subject, greeting, body, question, yesText, noText, goodbye, signature, fromEmail, recipients } = req.body;
-        //create survey
-        const survey = new Survey({
-            surveyName,
-            subject, 
-            greeting,
-            body,
-            question,
-            yesText, 
-            noText,
-            goodbye,
-            signature,
-            fromEmail,
-            recipients: recipients.split(',').map(email => ({ email: email.trim() })),
-            totalRecipients: recipients.split(',').map(email => ({ email: email.trim() })).length,
-            _user: req.user.id,
-            dateSent: Date.now()
-        }); 
-        
+    app.post('/api/surveys/send/:surveyId', requireLogin, requireCredits, async (req, res) => {
+        const survey = await Survey.findOneAndUpdate({ _id: req.params.surveyId }, { $set:{ isDraft: false, dateSent: Date.now() }}, {new: true}, (error, doc) => {
+            if (error) {
+                res.send(error);
+            }
+          });
+         
         //attempt to create and send email
         const mailer = new Mailer(survey, surveyTemplate(survey));
         try {
@@ -102,7 +89,7 @@ module.exports = app => {
             //save user
             const user = await req.user.save();
             //send updated user to get header to update as well
-            res.send(user);
+            res.send({ user, survey });
         } catch (err) {
             //422 -- unprocessable entity
             res.status(422).send(err);
@@ -110,7 +97,7 @@ module.exports = app => {
         //survey handler complete
     });
     
-    app.post('/api/surveys/draft', requireLogin, async (req, res) => {
+    app.post('/api/surveys/save', requireLogin, async (req, res) => {
         const { surveyName, subject, greeting, body, question, yesText, noText, goodbye, signature, fromEmail, recipients } = req.body;
         
         const survey = new Survey({
@@ -127,7 +114,7 @@ module.exports = app => {
             recipients: recipients.split(',').map(email => ({ email: email.trim() })),
             totalRecipients: recipients.split(',').map(email => ({ email: email.trim() })).length,
             _user: req.user.id,
-            dateSent: Date.now()
+            dateCreated: Date.now()
         }); 
         try {
             await survey.save();

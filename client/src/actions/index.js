@@ -15,14 +15,15 @@ export const handleToken = (token, cost, credits) => async dispatch => {
     dispatch({ type: FETCH_USER, payload: data });
 };
 
-export const submitSurvey = (values, history) => async dispatch => {
-    const { data } = await axios.post('/api/surveys', values);
-    history.push('/dashboard');
-    dispatch({ type: FETCH_USER, payload: data});
+export const submitSurvey = (surveyId, history) => async dispatch => {
+    const { data } = await axios.post(`/api/surveys/send/${surveyId}`);
+    dispatch({ type: FETCH_USER, payload: data.user })
+    dispatch({ type: FETCH_SURVEY, payload: data.survey });
 };
 
-export const saveSurvey = (values) => async dispatch => {
-    const { data } = await axios.post('/api/surveys/draft', values);
+export const saveSurvey = (values, history) => async dispatch => {
+    const { data } = await axios.post('/api/surveys/save', values);
+    history.push(`/surveys/preview/${data._id}`);
     dispatch({ type: FETCH_SURVEY, payload: data});
 }
 
@@ -36,7 +37,8 @@ export const fetchSurvey = (surveyId) => async dispatch => {
    dispatch({ type: FETCH_SURVEY, payload: data });
 };
 
-export const deleteSurvey = (surveyId) => async dispatch => {
+export const deleteSurvey = (surveyId, history) => async dispatch => {
     const { data } = await axios.delete(`/api/surveys/${surveyId}`);
+    history.push('/dashboard');
     dispatch({ type: FETCH_SURVEYS, payload: data });
 }
