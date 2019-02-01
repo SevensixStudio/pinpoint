@@ -96,10 +96,12 @@ module.exports = app => {
         }
         //survey handler complete
     });
-    
+
     app.post('/api/surveys/save', requireLogin, async (req, res) => {
         const { surveyName, subject, greeting, body, question, yesText, noText, goodbye, signature, fromEmail, recipients } = req.body;
-        
+
+        const uniqueRecipients = emailsStringToUniqueRecipients(recipients);
+
         const survey = new Survey({
             surveyName,
             subject, 
@@ -111,8 +113,8 @@ module.exports = app => {
             goodbye,
             signature,
             fromEmail,
-            recipients: recipients.split(',').map(email => ({ email: email.trim() })),
-            totalRecipients: recipients.split(',').map(email => ({ email: email.trim() })).length,
+            recipients: uniqueRecipients,
+            totalRecipients: uniqueRecipients.length,
             _user: req.user.id,
             dateCreated: Date.now()
         }); 
@@ -123,6 +125,42 @@ module.exports = app => {
             res.status(422).send(err);
         }
     });
+
+    app.post('/api/surveys/update/:surveyId', requireLogin, async (req, res) => {
+        const { surveyName, subject, greeting, body, question, yesText, noText, goodbye, signature, fromEmail, recipients } = req.body;
+       
+        const uniqueRecipients = emailsStringToUniqueRecipients(recipients);
+       
+        const survey = await Survey.findOneAndUpdate({ _id: req.params.surveyId }, 
+            { 
+                $set:{ 
+                    surveyName,
+                    subject,
+                    greeting,
+                    body,
+                    question,
+                    yesText, 
+                    noText,
+                    goodbye,
+                    signature,
+                    fromEmail,
+                    recipients: uniqueRecipients,
+                    totalRecipients: uniqueRecipients.length,
+                    dateUpdated: Date.now() 
+                }
+            }, {new: true}, (error, doc) => {   
+                if (error) {
+                    res.send(error);
+                }
+            });
+            try {
+                await survey.save();
+                res.send(survey);
+            } catch (err) {
+                res.status(422).send(err);
+            }
+    });
+    
     
     app.delete('/api/surveys/:surveyId', requireLogin, async (req, res) => {
         try {
@@ -138,4 +176,19 @@ module.exports = app => {
     });
 };
 
+function emailsStringToUniqueRecipients(emailsString) {
+    const emails = (emailsString.split(',')).map(email => {
+        return email.trim();
+    });
+    return (removeDuplicates(emails)).map(email => ({ email: email.trim() }));
+}
 
+function removeDuplicates(items) {
+    let unique = {};
+    items.forEach(function(i) {
+      if(!unique[i]) {
+        unique[i] = true;
+      }
+    });
+    return Object.keys(unique);
+  }
