@@ -37,16 +37,16 @@ class SurveyList extends Component {
                     </div>
                     <div key={survey._id} className="SurveyList__item--toolsPanel" id="tools">
                         <div className="SurveyList__item--toolsPanel--action">
-                            <a href={`/surveys/preview/${survey._id}`}><i class="far fa-eye"></i></a>
+                            <a href={`/surveys/preview/${survey._id}`}><i className="far fa-eye"></i></a>
                         </div>
                         <div className="SurveyList__item--toolsPanel--action">
-                            <a href="#"><i class="far fa-envelope"></i></a>
+                            <a href="#"><i className="far fa-envelope"></i></a>
                         </div>
                         <div className="SurveyList__item--toolsPanel--action">
-                            <a href="#"><i class="far fa-edit"></i></a>
+                            <a href="#"><i className="far fa-edit"></i></a>
                         </div>
                         <div className="SurveyList__item--toolsPanel--action" onClick={() => this.props.deleteSurvey(survey._id)}>
-                            <a href="#"><i class="far fa-trash-alt"></i></a>
+                            <a href="#"><i className="far fa-trash-alt"></i></a>
                         </div>
                     </div>
                 </div>

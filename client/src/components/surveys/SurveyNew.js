@@ -8,10 +8,6 @@ import SurveyFormWizard from './wizardForm/SurveyFormWizard';
 import '../../index.scss';
 import SurveyPreview from './SurveyPreview';
 
-const test = () => {
-    console.log("FUCK");
-}
-
 const SurveyNew = ({ match: { path, params }, saveSurvey, updateSurvey, history }) => {
         return (
             <div className="surveyNew-container">

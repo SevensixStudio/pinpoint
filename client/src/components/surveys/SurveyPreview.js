@@ -54,7 +54,7 @@ class SurveyPreview extends Component {
         return (
             <div className={className}>
                 <div onClick={() => this.props.deleteSurvey(this.props.surveyId, this.props.history)}>
-                    <i class="far fa-trash-alt"></i>
+                    <i className="far fa-trash-alt"></i>
                 </div>
             </div>
         )
@@ -67,8 +67,8 @@ class SurveyPreview extends Component {
             );
         }
         return [
-            <PageHeader text={`${survey.surveyName} - Preview`} />,
-            <div className="SurveyPreview__preview">
+            <PageHeader key="header" text={`${survey.surveyName} - Preview`} />,
+            <div key="preview" className="SurveyPreview__preview">
                 {this.renderToolbar(survey.isDraft, "SurveyPreview__preview--toolbar")}
                 <div className="SurveyPreview__preview--email">
                     <div className="emailbox">
@@ -97,7 +97,7 @@ class SurveyPreview extends Component {
                     {survey.isDraft ? (<button className="btn btn--yellow"><i class="far fa-envelope"></i> Send now</button>) : null} 
                 </div>
             </div>,
-            <div className="SurveyPreview__details">
+            <div key="details" className="SurveyPreview__details">
                 <div className="SurveyPreview__details--info">
                     <div className="SurveyPreview__details--dates">
                         <p>Date Created: {new Date(survey.dateCreated).toLocaleDateString() + " " + new Date(survey.dateCreated).toLocaleTimeString()}</p>
