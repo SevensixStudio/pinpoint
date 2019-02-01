@@ -30,11 +30,11 @@ let WizardStep = ({isSaved, step, handleSubmit, stepNumber, numberOfSteps, previ
                         <button className="btn button--next" key="2" type="submit">Next <i className="fas fa-chevron-right"></i></button>
                     ]}
                     {(stepNumber === numberOfSteps && !isSaved) && [
-                        <button className="btn button--previous" key="1" type="button" onClick={previousPage}><i className="fas fa-fa-chevron-left"></i> Previous</button>,
+                        <button className="btn button--previous" key="1" type="button" onClick={previousPage}><i className="fas fa-chevron-left"></i> Previous</button>,
                         <button className="btn button--submit" key="2" type="submit" disabled={pristine || submitting}>Save &amp; preview <i className="far fa-save"></i></button>
                     ]}
                     {(stepNumber === numberOfSteps && isSaved) && [
-                        <button className="btn button--previous" key="1" type="button" onClick={previousPage}><i className="fas fa-fa-chevron-left"></i> Previous</button>,
+                        <button className="btn button--previous" key="1" type="button" onClick={previousPage}><i className="fas fa-chevron-left"></i> Previous</button>,
                         <button className="btn button--submit" key="2" type="submit">Save &amp; preview changes <i className="far fa-save"></i></button>
                     ]}
 
