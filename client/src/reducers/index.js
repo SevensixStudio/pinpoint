@@ -12,7 +12,7 @@ export default combineReducers({
     auth: authReducer,
     //redux form has to be assigned to a specific key called form
     form: reduxForm,
-    surveys: surveysReducer,
+    surveyList: surveysReducer,
     survey: surveyReducer,
     formFields: fieldsReducer
 });

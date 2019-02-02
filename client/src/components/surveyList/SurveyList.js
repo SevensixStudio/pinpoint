@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchSurveys, deleteSurvey } from '../../actions';
+import { fetchSurveys, deleteSurvey, fetchSurveysTEST } from '../../actions';
 import TimeAgo from 'timeago-react';
 import CircleGraph from '../circleGraph/CircleGraph';
 
@@ -12,15 +12,22 @@ import YesNoStats from '../numberStats/YesNoStats';
 class SurveyList extends Component {
     componentDidMount() {
         if (this.props.auth) {
-            this.props.fetchSurveys();
+            this.props.fetchSurveysTEST();
         }
     }
 
     renderSurveys() {
-        if (this.props.surveys.length === 0) {
-            return <p className="SurveyList__empty">You haven't created any surveys yet. <a className="inline-link" href="/surveys/new">Create one now!</a></p>;
+        const surveys = this.props.surveys;
+        if (surveys === 0) {
+            return <p className="SurveyList__empty">You haven't created any surveys yet. <a className="inline-link" href="/surveys/new">Create one now!</a></p>
         }
-        return this.props.surveys.map(survey => {
+        if (this.props.isFetching) {
+            return <p>LOADING...</p>;
+        }
+        if (this.props.isError) {
+            return <p>{this.props.errorMessage}</p>
+        }
+        return surveys.map(survey => {
             return (  
                 <div key={survey._id} className="SurveyList__item">
                     <div className="SurveyList__item--titleBox">
@@ -44,10 +51,10 @@ class SurveyList extends Component {
                             <a href={`/surveys/preview/${survey._id}`}><i className="far fa-eye"></i></a>
                         </div>
                         {survey.isDraft && [
-                            <div className="SurveyList__item--toolsPanel--action">
+                            <div key="send" className="SurveyList__item--toolsPanel--action">
                                 <a href="#"><i className="far fa-envelope"></i></a>
                             </div>,
-                            <div className="SurveyList__item--toolsPanel--action">
+                            <div key="edit" className="SurveyList__item--toolsPanel--action">
                                 <a href="#"><i className="far fa-edit"></i></a>
                             </div>]}
                         <div className="SurveyList__item--toolsPanel--action" onClick={() => this.props.deleteSurvey(survey._id)}>
@@ -68,8 +75,8 @@ class SurveyList extends Component {
     }
 }
 
-function mapStateToProps({ surveys, auth, state }) {
-    return { surveys, auth, state };
+function mapStateToProps({ surveyList: {surveys, isFetching, isError, errorMessage }, auth, state }) {
+    return { surveys, isFetching, isError, errorMessage, auth, state };
 }
 
-export default connect(mapStateToProps, { fetchSurveys, deleteSurvey })(SurveyList);
+export default connect(mapStateToProps, { fetchSurveys, deleteSurvey, fetchSurveysTEST })(SurveyList);
