@@ -26,21 +26,21 @@ I built this app as part of my exploration into the world of React, Redux, Node.
 ### Technologies used
 
 MongoDB
-Express 4.16.4
-Mongoose 5.4.5
-PassportJS 0.4.0
-Stripe 6.20.1
-SendGrid 5.2.3
-CookieSession 2.0.0-beta.3
+* Express 4.16.4
+* Mongoose 5.4.5
+* PassportJS 0.4.0
+* Stripe 6.20.1
+* SendGrid 5.2.3
+* CookieSession 2.0.0-beta.3
 
-React 16.7.0
-Redux 4.0.1
-React Router 4.3.1
-Redux Form 8.1.0
-Redux Thunk 2.3.0
-Axios 0.18.0
-React Stripe Checkout 2.6.3
-Sass 4.11.0
+* React 16.7.0
+* Redux 4.0.1
+* React Router 4.3.1
+* Redux Form 8.1.0
+* Redux Thunk 2.3.0
+* Axios 0.18.0
+* React Stripe Checkout 2.6.3
+* Sass 4.11.0
 
 ---
 
@@ -60,9 +60,7 @@ $ npm run dev
 
 ---
 
-### 
-
-TODO
+### TODO
 
 * Handling server response errors caused when user is not logged in or when funds are insufficient
 * Ask for user verification on send and delete
