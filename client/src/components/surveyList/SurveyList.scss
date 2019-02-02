@@ -52,6 +52,25 @@
             grid-row: 2 / -1;
             grid-column: 2 / -1;
             justify-self: end;
+
+            > .date {
+                display: inline; 
+            }
+
+            > .date--ago {
+                color: $color-grey-dark-2;
+              
+                &:focus, &:hover, &:visited, &:link, &:active {
+                    color: $color-grey-dark-2;
+                }
+            }
+            
+            > hr {
+                border-top: 1px solid $color-grey-light-3;
+                border-bottom: none;
+                border-right: none;
+                border-left: none;
+            }
         }
 
         &--toolsPanel {
