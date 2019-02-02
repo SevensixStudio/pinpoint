@@ -107,6 +107,10 @@
 
         &--dates {
            margin-bottom: 2rem;
+
+            > .date {
+                display: inline; 
+            }
         }
 
         &--recipients {

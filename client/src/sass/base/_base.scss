@@ -37,3 +37,16 @@ body {
     display: grid;
     grid-template-rows: 8rem auto;
 }
+
+.removeLinkStyles, {
+    text-decoration: none;
+
+    &:focus, &:hover, &:visited, &:link, &:active {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    > hr {
+        height: 1px;
+    }
+}

@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchSurvey, submitSurvey, deleteSurvey } from '../../actions';
+import TimeAgo from 'timeago-react';
 
 import PageHeader from '../pageHeader/PageHeader';
 import YesNoStats from '../numberStats/YesNoStats';
@@ -42,7 +43,7 @@ class SurveyPreview extends Component {
                     <div>
                         <a id="edit" href={`/surveys/edit/${this.props.surveyId}`}><i className="far fa-edit"></i></a>
                     </div>
-                    <div onClick={() => this.props.submitSurvey(this.props.surveyId, this.props.history)}>
+                    <div onClick={() => this.props.submitSurvey(this.props.surveyId)}>
                         <i className="far fa-envelope"></i>
                     </div>
                     <div onClick={() => this.props.deleteSurvey(this.props.surveyId, this.props.history)}>
@@ -94,7 +95,7 @@ class SurveyPreview extends Component {
                     <div className="numbers"> 
                         <YesNoStats yesCount={survey.yes} noCount={survey.no} total={survey.totalRecipients}/>
                     </div>
-                    {survey.isDraft ? (<button onClick={() => this.props.submitSurvey(this.props.surveyId, this.props.history)} className="btn btn--yellow"><i className="far fa-envelope"></i> Send now</button>) : null} 
+                    {survey.isDraft ? (<button onClick={() => this.props.submitSurvey(this.props.surveyId)} className="btn btn--yellow"><i className="far fa-envelope"></i> Send now</button>) : null} 
                 </div>
             </div>,
             <div key="details" className="SurveyPreview__details">
@@ -103,7 +104,7 @@ class SurveyPreview extends Component {
                         <p>Date Created: {new Date(survey.dateCreated).toLocaleDateString() + " " + new Date(survey.dateCreated).toLocaleTimeString()}</p>
                         {survey.dateUpdated ? (<p>Date last updated: {new Date(survey.dateUpdated).toLocaleDateString() + " " + new Date(survey.dateUpdated).toLocaleTimeString()}</p>) : null}
                         {survey.isDraft ? (<p>This survey has not been sent yet</p>) : (<p>Date Sent: {new Date(survey.dateSent).toLocaleDateString() + " " + new Date(survey.dateSent).toLocaleTimeString()}</p>)}
-                        {survey.isDraft ? null : (survey.lastResponded ? (<p>Date Last reply: {new Date(survey.lastResponded).toLocaleDateString() + " at " + new Date(survey.lastResponded).toLocaleTimeString()}</p>) : (<p>No one has responded to your survey yet.</p>))}
+                        {survey.lastResponded ? [<p className="date">Last response recieved: </p>,<TimeAgo datetime={new Date(survey.lastResponded)} />] : <p className="date">No one has responded to your survey yet</p>}
                     </div>
                     <div className="SurveyPreview__details--recipients">
                         <p>Total recipients: {survey.totalRecipients}</p>
