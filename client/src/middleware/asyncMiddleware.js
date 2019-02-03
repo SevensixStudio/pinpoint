@@ -33,8 +33,9 @@ const asyncMiddleware = ({ dispatch }) => next => action => {
       dispatch(onSuccess(data));
     })
     .catch(error => {
-      console.log(error.response.data.error);
-      dispatch(onRequestError(label, error.response.data.error));
+      const err = (error.response ? error.response.data.error : error);
+      console.log(err);
+      dispatch(onRequestError(label, err));
 
       if (error.response && error.response.status === 403) {
         dispatch(accessDenied(window.location.pathname));
