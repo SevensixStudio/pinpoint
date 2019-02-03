@@ -62,20 +62,19 @@ $ npm run dev
 
 ### TODO
 
-* Handling server response errors caused when user is not logged in or when funds are insufficient
+* Add redirects to components
+* Wire up toolbar buttons in survey list item
+* Create UI for status updatus and validation
 * Ask for user verification on send and delete
-* Provide user with status updates from the server when sending or deleting a survey
+* Fill dashboard stats with real data
 * Allow users to upload emails from CSV file
-* Display last response as 'Last response recieved Xhrs ago'
+* Backwards navigation
 * Allow users to signup and login with Email/Password
 * Make text darker in form 
-* Navigate to survey preview on survey list item clicked
-* Conditional rendering in survey list item
 * Make design responsive
 * Design 'Thank you for responding page'
 * Design email template
 * Design landing page 
-* Redirect users to dashboard on payment recieved
 * Create additional email templates
   
 ---
