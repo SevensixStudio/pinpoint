@@ -71,30 +71,28 @@ module.exports = app => {
     });
     
     app.post('/api/surveys/send/:surveyId', requireLogin, requireCredits, async (req, res) => {
-        const survey = await Survey.findOneAndUpdate({ _id: req.params.surveyId }, { $set:{ isDraft: false, dateSent: Date.now() }}, {new: true}, (error, doc) => {
+        await Survey.findOneAndUpdate({ _id: req.params.surveyId, isDraft: true }, 
+                { $set:{ isDraft: false, dateSent: Date.now() }}, 
+                {new: true}, async (error, survey) => {
             if (error) {
                 res.send(error);
+                return;
             }
-          });
-         
-        //attempt to create and send email
-        const mailer = new Mailer(survey, surveyTemplate(survey));
-        try {
-            await mailer.send();
-            //did email send successfully?
-            //save survey
-            await survey.save();
-            //deduct one credit from user
-            req.user.credits -= 1;
-            //save user
-            const user = await req.user.save();
-            //send updated user to get header to update as well
-            res.send({ user, survey });
-        } catch (err) {
-            //422 -- unprocessable entity
-            res.status(422).send(err);
-        }
-        //survey handler complete
+            if (survey === null) {
+                res.status(403).send({error: "Unable to send"});
+                return;
+            }
+            const mailer = new Mailer(survey, surveyTemplate(survey));
+            try {
+                await mailer.send();
+                await survey.save();
+                req.user.credits -= 1;
+                const user = await req.user.save();
+                res.send({ user, survey });
+            } catch (err) {
+                res.status(422).send(err);
+            }
+        });
     });
 
     app.post('/api/surveys/save', requireLogin, async (req, res) => {
@@ -131,7 +129,7 @@ module.exports = app => {
        
         const uniqueRecipients = emailsStringToUniqueRecipients(recipients);
        
-        const survey = await Survey.findOneAndUpdate({ _id: req.params.surveyId }, 
+        await Survey.findOneAndUpdate({ _id: req.params.surveyId }, 
             { 
                 $set:{ 
                     surveyName,
@@ -148,27 +146,40 @@ module.exports = app => {
                     totalRecipients: uniqueRecipients.length,
                     dateUpdated: Date.now() 
                 }
-            }, {new: true}, (error, doc) => {   
+            }, {new: true}, async (error, survey) => {   
                 if (error) {
-                    res.send(error);
+                    res.status(403).send({error: "Invalid id"});
+                    return;
+                }
+                if (survey === null) {
+                    res.status(403).send({error: "Unable to save changes"});
+                    return;
+                }
+                try {
+                    await survey.save();
+                    res.send(survey);
+                } catch (err) {
+                    res.status(422).send(err);
                 }
             });
-            try {
-                await survey.save();
-                res.send(survey);
-            } catch (err) {
-                res.status(422).send(err);
-            }
     });
     
     
     app.delete('/api/surveys/:surveyId', requireLogin, async (req, res) => {
         try {
             await Survey.deleteOne({ _id: req.params.surveyId });
+            res.send({});
+        } catch (err) {
+            res.status(404).send({ error: `Unable to delete survey with the ID of '${req.params.surveyId}'` });
+        }
+    });
+
+    app.delete('/api/surveys/list/:surveyId', requireLogin, async (req, res) => {
+        try {
+            await Survey.deleteOne({ _id: req.params.surveyId });
             const surveys = await Survey.find({ _user: req.user.id })
                 .sort({dateSent: -1})
                 .select({recipients: false});
-        
             res.send(surveys);
         } catch (err) {
             res.status(404).send({ error: `Unable to delete survey with the ID of '${req.params.surveyId}'` });
