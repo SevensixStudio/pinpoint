@@ -26,7 +26,7 @@ class PurchaseCredits extends Component {
             return (
                 <div key={option.cost} className="PurchaseCredits__optionsContainer--item">
                     <StripeCheckout 
-                        name="PinPoint"//header in payment window
+                        name="PinPoint"
                         image={logo}
                         description={`${option.credits} Credits for $${option.cost / 100}`}
                         panelLabel={`${option.credits} Credits for`}
@@ -55,6 +55,9 @@ class PurchaseCredits extends Component {
                 <Header linkText="Dashboard" linkHref="/dashboard" />
                 <div className="PurchaseCredits">
                     <PageHeader text="Buy Credits" />
+                    {this.props.isProcessing && <p>Payment processing...</p>}
+                    {this.props.isError && <p>There was an error with your payment</p>}
+                    {this.props.paymentSuccessful && <p>Payment successful!</p>}
                     <div className="PurchaseCredits__currentCredits">Available Credits: 7</div>
                     <div className="PurchaseCredits__infoBox">
                         <h3 className="PurchaseCredits__infoBox--title">How do credits work?</h3>
@@ -71,4 +74,8 @@ class PurchaseCredits extends Component {
     }
 }
 
-export default connect(null, actions)(PurchaseCredits);
+function mapStateToProps({ payment: { isProcessing, isError, paymentSuccessful } }) {
+    return { isProcessing, isError, paymentSuccessful };
+}
+
+export default connect(mapStateToProps, actions)(PurchaseCredits);

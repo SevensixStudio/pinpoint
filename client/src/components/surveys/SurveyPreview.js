@@ -1,7 +1,6 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchSurvey, submitSurvey, deleteSurvey } from '../../actions';
+import { fetchSurvey, sendSurvey, deleteSurvey } from '../../actions';
 import TimeAgo from 'timeago-react';
 
 import PageHeader from '../pageHeader/PageHeader';
@@ -43,7 +42,7 @@ class SurveyPreview extends Component {
                     <div>
                         <a id="edit" href={`/surveys/edit/${this.props.surveyId}`}><i className="far fa-edit"></i></a>
                     </div>
-                    <div onClick={() => this.props.submitSurvey(this.props.surveyId)}>
+                    <div onClick={() => this.props.sendSurvey(this.props.surveyId)}>
                         <i className="far fa-envelope"></i>
                     </div>
                     <div onClick={() => this.props.deleteSurvey(this.props.surveyId, this.props.history)}>
@@ -62,7 +61,7 @@ class SurveyPreview extends Component {
     }
 
     renderContent(survey) {
-        if (_.isEmpty(survey)) {
+        if (this.props.isLoading) {
             return (
                 <PageHeader text="Loading..." />
             );
@@ -121,14 +120,32 @@ class SurveyPreview extends Component {
         const  survey  = this.props.survey;
         return (
             <div className="SurveyPreview">
+                {this.props.isSending && <p style={{ color: 'black'}}>Sending...</p>}
+                {this.props.sendSuccessful && <p style={{ color: 'black'}}>Sent!</p>}
+                {this.props.isSendError && <p style={{ color: 'black'}}>AN ERROR HAS OCCURED: {this.props.sendErrorMessage}</p>}
+                {this.props.isDeleting && <p style={{ color: 'black'}}>Deleting...</p>}
+                {this.props.deleteSuccessful && <p style={{ color: 'black'}}>Deleted!</p>}
+                {this.props.isDeleteError && <p style={{ color: 'black'}}>AN ERROR HAS OCCURED: {this.props.deleteErrorMessage}</p>}    
                 {this.renderContent(survey)}
             </div>
         )
     }
 }
   
-function mapStateToProps({ survey }, state) {
-    return { survey, state };
+function mapStateToProps({ survey, sendStatus, deleteStatus }) {
+    return { 
+        survey:survey.survey,
+        isLoading: survey.isLoading,
+        isSending: sendStatus.isSending,
+        sendSuccessful: sendStatus.sendSuccessful,
+        isSendError: sendStatus.isError,
+        sendErrorMessage: sendStatus.errorMessage,
+        isDeleting: deleteStatus.isDeleting,
+        deleteSuccessful: deleteStatus.deleteSuccessful,
+        isDeleteError: deleteStatus.isError,
+        deleteErrorMessage: deleteStatus.errorMessage
+    };
 }
 
-export default connect(mapStateToProps, { fetchSurvey, submitSurvey, deleteSurvey })(SurveyPreview);
+
+export default connect(mapStateToProps, { fetchSurvey, sendSurvey, deleteSurvey })(SurveyPreview);

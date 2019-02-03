@@ -10,21 +10,20 @@ import './Header.scss';
 class Header extends Component {
     
     renderContent() {
-       switch (this.props.auth) {
-           case null:
-                return;
-           case false:
-                return [
-                    <li className="Header__nav--item" key="1"><a className="Header__nav--item--text" href="/login">Login</a></li>,
-                    <li className="Header__nav--item" key="2"><a className="btn btn--yellow" href="/signup">Sign up for free</a></li>
-                ];
-           default: 
-                return [
-                    <li className="Header__nav--item" key="1"><a className="Header__nav--item--text" href={this.props.linkHref}>{this.props.linkText}</a></li>,
-                    <li className="Header__nav--item" key="2"><a className="Header__nav--item--text" href="/api/logout">Logout</a></li>,
-                    <li className="Header__nav--item" key="3"><Link className="btn btn--yellow" to="/purchase">Buy credits</Link></li>
-                ];
-       }
+        if (this.props.isLoading) {
+            return <p>Loading...</p>
+        }
+        if (this.props.user === (null || false)) {
+            return [
+                <li className="Header__nav--item" key="1"><a className="Header__nav--item--text" href="/login">Login</a></li>,
+                <li className="Header__nav--item" key="2"><a className="btn btn--yellow" href="/signup">Sign up for free</a></li>
+            ];
+        }
+        return [
+            <li className="Header__nav--item" key="1"><a className="Header__nav--item--text" href={this.props.linkHref}>{this.props.linkText}</a></li>,
+            <li className="Header__nav--item" key="2"><a className="Header__nav--item--text" href="/api/logout">Logout</a></li>,
+            <li className="Header__nav--item" key="3"><Link className="btn btn--yellow" to="/purchase">Buy credits</Link></li>
+        ];
     }
 
     render() {
@@ -39,8 +38,8 @@ class Header extends Component {
     }
 }
 
-function mapStateToProps({ auth }) {
-    return { auth };
+function mapStateToProps({ auth: { user, isLoading } }) {
+    return { user, isLoading };
 }
 
 export default connect(mapStateToProps)(Header);

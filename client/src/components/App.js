@@ -34,7 +34,7 @@ class App extends Component {
             <div>
                 <BrowserRouter>
                     <div className="container">
-                        <Route exact path="/" component={this.props.auth === false ? Landing : Dashboard} />
+                        <Route exact path="/" component={this.props.auth.user === (null || false) ? Landing : Dashboard} />
                         <ProtectedRoute authed={this.props.auth !== false} exact path="/dashboard" component={Dashboard} />
                         <ProtectedRoute authed={this.props.auth !== false} path="/surveys/new" component={SurveyNew} />
                         <ProtectedRoute authed={this.props.auth !== false} path="/surveys/edit/:id" component={SurveyNew} />

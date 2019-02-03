@@ -9,11 +9,14 @@ import StepDots from '../../steps/StepDots';
 import '../../../index.scss';
 import './WizardStep.scss';
 
-let WizardStep = ({isSaved, step, handleSubmit, stepNumber, numberOfSteps, previousPage, pristine, submitting}) => {
+let WizardStep = ({isSaved, step, handleSubmit, stepNumber, numberOfSteps, previousPage, pristine, submitting, loadingValues, saveStatus}) => {
     return (
         <div className="WizardStep">
             <h3 className="WizardStep__title">{step.title}</h3>
             <p className="WizardStep__message">{step.message}</p>
+            {loadingValues && <p>Loading Values...</p>}
+            {saveStatus.isSaving && <p>Is saving...</p>}
+            {saveStatus.saveSuccessful && <p>Saved!</p>}
             <form className="WizardStep__form" onSubmit={handleSubmit}>
                 <div className="WizardStep__form--fields">
                     {_.map(step.fields, field => {
@@ -57,7 +60,9 @@ WizardStep = reduxForm({
 
   WizardStep = connect(
       state => ({
-          initialValues: state.formFields
+          initialValues: state.formFields.values,
+          loadingValues: state.formFields.isLoading,
+          saveStatus: state.saveStatus
       })
   )(WizardStep);
 

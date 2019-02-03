@@ -12,10 +12,11 @@ import loginInputs from './loginInputs';
 class Login extends Component {
 
     renderMessage() {
-        switch (this.props.auth) {
-            case null:
-                return;
-            case false:
+        if (this.props.isLoading) {
+            return <p>Loading...</p>
+        }
+        switch (this.props.user) {
+            case (null || false):
                 if (this.props.location.pathname === '/signup') {
                     return <p className="Login__message">Welcome! Sign up now and send<br />your first survey for free.</p>; 
                 }
@@ -32,7 +33,7 @@ class Login extends Component {
     }
 
     render() {
-        const isSignUp = (this.props.location.pathname === '/signup' && !this.props.auth);
+        const isSignUp = (this.props.location.pathname === '/signup' && !this.props.user);
         return (
             <div className="login-container">
                 <div className="Login">
@@ -55,7 +56,7 @@ class Login extends Component {
     }
 }
 
-function mapStateToProps({ auth }) {
-    return { auth };
+function mapStateToProps({ auth: { user, isLoading } }) {
+    return { user, isLoading };
 }
 export default connect(mapStateToProps)(Login);
