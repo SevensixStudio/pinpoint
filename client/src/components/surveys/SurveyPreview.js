@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchSurvey, sendSurvey, deleteSurvey } from '../../actions';
 import TimeAgo from 'timeago-react';
@@ -34,9 +35,9 @@ class SurveyPreview extends Component {
             </div>
         )
     }
-
-    renderToolbar(isDraft, className) {
-        if (isDraft) {
+    
+    renderToolbar(isDraft, isSent, className) {
+        if (isDraft && !isSent) {
             return (
                 <div className={className}>
                     <div>
@@ -45,7 +46,7 @@ class SurveyPreview extends Component {
                     <div onClick={() => this.props.sendSurvey(this.props.surveyId)}>
                         <i className="far fa-envelope"></i>
                     </div>
-                    <div onClick={() => this.props.deleteSurvey(this.props.surveyId, this.props.history)}>
+                    <div onClick={() => this.props.deleteSurvey(this.props.surveyId, true)}>
                         <i className="far fa-trash-alt"></i>
                     </div>
                 </div>
@@ -53,7 +54,7 @@ class SurveyPreview extends Component {
         }
         return (
             <div className={className}>
-                <div onClick={() => this.props.deleteSurvey(this.props.surveyId, this.props.history)}>
+                <div onClick={() => this.props.deleteSurvey(this.props.surveyId, true)}>
                     <i className="far fa-trash-alt"></i>
                 </div>
             </div>
@@ -69,7 +70,7 @@ class SurveyPreview extends Component {
         return [
             <PageHeader key="header" text={`${survey.surveyName} - Preview`} />,
             <div key="preview" className="SurveyPreview__preview">
-                {this.renderToolbar(survey.isDraft, "SurveyPreview__preview--toolbar")}
+                {this.renderToolbar(survey.isDraft, this.props.sendSuccessful, "SurveyPreview__preview--toolbar")}
                 <div className="SurveyPreview__preview--email">
                     <div className="emailbox">
                         <p>From: {survey.fromEmail}</p>
@@ -94,7 +95,7 @@ class SurveyPreview extends Component {
                     <div className="numbers"> 
                         <YesNoStats yesCount={survey.yes} noCount={survey.no} total={survey.totalRecipients}/>
                     </div>
-                    {survey.isDraft ? (<button onClick={() => this.props.submitSurvey(this.props.surveyId)} className="btn btn--yellow"><i className="far fa-envelope"></i> Send now</button>) : null} 
+                    {survey.isDraft && !this.props.sendSuccessful ? (<button onClick={() => this.props.sendSurvey(this.props.surveyId)} className="btn btn--yellow"><i className="far fa-envelope"></i> Send now</button>) : null} 
                 </div>
             </div>,
             <div key="details" className="SurveyPreview__details">
@@ -111,12 +112,15 @@ class SurveyPreview extends Component {
                         {this.state.showRecipients ? this.renderRecipients(survey.recipients) : null}
                     </div>
                 </div>
-                {this.renderToolbar(survey.isDraft, "SurveyPreview__details--toolbar SurveyPreview__preview--toolbar")}
+                {this.renderToolbar(survey.isDraft, this.props.sendSuccessful, "SurveyPreview__details--toolbar SurveyPreview__preview--toolbar")}
             </div>
         ];
     }
 
     render() {
+        if (this.props.deleteSuccessful) {
+            return <Redirect to="/dashboard" />
+        }
         const  survey  = this.props.survey;
         return (
             <div className="SurveyPreview">
@@ -148,4 +152,4 @@ function mapStateToProps({ survey, sendStatus, deleteStatus }) {
 }
 
 
-export default connect(mapStateToProps, { fetchSurvey, sendSurvey, deleteSurvey })(SurveyPreview);
+export default withRouter(connect(mapStateToProps, { fetchSurvey, sendSurvey, deleteSurvey })(SurveyPreview));
