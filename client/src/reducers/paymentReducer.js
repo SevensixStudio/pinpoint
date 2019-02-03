@@ -1,42 +1,42 @@
-import { 
-    FETCH_SURVEY,
-    SET_SURVEY,
+import {
+    PAYMENT_SUCCESSFUL, 
+    HANDLE_TOKEN,
     REQUEST_START,
     REQUEST_END,
     REQUEST_ERROR,
  } from '../actions/types';
 
  const INITIAL_STATE = {
-     isLoading: true,
+     isProcessing: false,
      isError: false,
      errorMessage: '',
-     survey: {}
+     paymentSuccessful: false
  }
 
 export default function(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case SET_SURVEY:
+        case PAYMENT_SUCCESSFUL:
             return Object.assign({}, state, {
-                survey: action.payload
+                paymentSuccessful: true
             });
         case REQUEST_START:
-            if (action.payload === FETCH_SURVEY) {
+            if (action.payload === HANDLE_TOKEN) {
                 return Object.assign({}, state, {
-                    isLoading: true
+                    isProcessing: true
                 });
             }   
             return state;
         case REQUEST_END:
-            if (action.payload === FETCH_SURVEY) {
+            if (action.payload === HANDLE_TOKEN) {
                 return Object.assign({}, state, {
-                    isLoading: false
+                    isProcessing: false
                 });
             }   
             return state;
         case REQUEST_ERROR:
-            if (action.payload === FETCH_SURVEY) {
+            if (action.payload === HANDLE_TOKEN) {
                 return Object.assign({}, state, {
-                    isLoading: false,
+                    isProcessing: false,
                     isError: true,
                     errorMessage: action.error
                 });

@@ -1,42 +1,42 @@
-import { 
-    FETCH_SURVEY,
-    SET_SURVEY,
+import {
+    DELETE_SUCCESSFUL, 
+    DELETE_SURVEY,
     REQUEST_START,
     REQUEST_END,
     REQUEST_ERROR,
  } from '../actions/types';
 
  const INITIAL_STATE = {
-     isLoading: true,
+     isDeleting: false,
      isError: false,
      errorMessage: '',
-     survey: {}
+     deleteSuccessful: false,
  }
 
 export default function(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case SET_SURVEY:
+        case DELETE_SUCCESSFUL:
             return Object.assign({}, state, {
-                survey: action.payload
+                deleteSuccessful: true
             });
         case REQUEST_START:
-            if (action.payload === FETCH_SURVEY) {
+            if (action.payload === DELETE_SURVEY) {
                 return Object.assign({}, state, {
-                    isLoading: true
+                    isDeleting: true
                 });
             }   
             return state;
         case REQUEST_END:
-            if (action.payload === FETCH_SURVEY) {
+            if (action.payload === DELETE_SURVEY) {
                 return Object.assign({}, state, {
-                    isLoading: false
+                    isDeleting: false
                 });
             }   
             return state;
         case REQUEST_ERROR:
-            if (action.payload === FETCH_SURVEY) {
+            if (action.payload === DELETE_SURVEY) {
                 return Object.assign({}, state, {
-                    isLoading: false,
+                    isDeleting: false,
                     isError: true,
                     errorMessage: action.error
                 });

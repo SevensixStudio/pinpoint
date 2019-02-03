@@ -1,160 +1,209 @@
-import axios from 'axios';
-import { push } from 'react-router-redux';
-
 import { 
-    FETCH_USER, 
+    ASYNC_REQUEST,
+    REQUEST_START,
+    ACCESS_DENIED,
+    REQUEST_END,
+    REQUEST_ERROR,
     FETCH_SURVEYS,
-    RECEIVE_SURVEYS, 
-    REQUEST_SURVEYS,
-    ERROR_SURVEYS,
+    SET_SURVEYS,
+    FETCH_USER, 
+    SET_USER,
     FETCH_SURVEY, 
+    SET_SURVEY,
     FETCH_FORM_FIELDS,
+    SET_FORM_FIELDS,
+    HANDLE_TOKEN,
+    PAYMENT_SUCCESSFUL,
+    SAVE_SURVEY,
+    SAVE_SUCCESSFUL,
+    SEND_SURVEY,
+    SEND_SUCCESSFUL,
+    DELETE_SURVEY,
+    DELETE_SUCCESSFUL
  } from './types';
 
-//redux thunk inspects the value we return from an action creator 
-//if it sees that we are returning a function instead of an action Redux thunk will
-//automatically call the returned function and pass in the dispatch function as an argument
-export const fetchUser = () => async dispatch => {
-    const { data } = await axios.get('/api/current_user');
-    dispatch({ type: FETCH_USER, payload: data });
-};
-
-export const handleToken = (token, cost, credits) => async dispatch => {
-    const { data } = await axios.post('/api/stripe', {token, cost, credits});
-    //send updated user info (with added credits) to update header
-    dispatch({ type: FETCH_USER, payload: data });
-};
-
-export const submitSurvey = (surveyId, history) => async dispatch => {
-    console.log('sending');
-    const all = await axios.post(`/api/surveys/send/${surveyId}`);
-    console.log(all);
-    // dispatch({ type: FETCH_USER, payload: data.user });
-    // dispatch({ type: FETCH_SURVEY, payload: data.survey });
-};
-
-export const saveSurvey = (values, history) => async dispatch => {
-    const { data } = await axios.post('/api/surveys/save', values);
-    history.push(`/surveys/preview/${data._id}`);
-    dispatch({ type: FETCH_SURVEY, payload: data});
+ function requestAction({
+    url = "",
+    method = "GET",
+    data = null,
+    onSuccess = () => {},
+    onFailure = () => {},
+    label = ""
+  }) {
+    return {
+      type: ASYNC_REQUEST,
+      payload: {
+        url,
+        method,
+        data,
+        onSuccess,
+        onFailure,
+        label
+      }
+    };
 }
 
-// export const saveSurvey = (values, history) => async dispatch => {
-    
+export const accessDenied = url => ({
+    type: ACCESS_DENIED,
+    payload: { url }
+});
 
-//     // dispatch({ type: SEND_SURVEY_BEGIN });
-//     // axios.post('/api/surveys/save', values)
-//     //     .then(data => {
-//     //         dispatch({ type: SEND_SURVEY_SUCCESS, payload: data });
-//     //         dispatch({ type: FETCH_SURVEY, payload: data});
-//     //         history.push(`/surveys/preview/${data._id}`);
-//     //     })
-//     //     .catch(error =>
-//     //         dispatch({ type: SEND_SURVEY_FAILURE, payload: { error }})
-//     //     );
+export const onRequestError = (label, error) => ({
+    type: REQUEST_ERROR,
+    error,
+    payload: label
+});
 
-//     // try {
+export const requestStart = label => ({
+    type: REQUEST_START,
+    payload: label
+});
 
-//     //     const { data } = await axios.post('/api/surveys/save', values);
-//     //     history.push(`/surveys/preview/${data._id}`);
-//     //     dispatch({ type: SEND_SURVEY_SUCCESS, payload: data});
-//     //     dispatch({ type: FETCH_SURVEY, payload: data});
-//     // } catch (err) {
-//     //     console.log('ERRROR');
-//     //     console.log(err);
-//     //     dispatch({ type: SEND_SURVEY_FAILURE, payload: { err }});
-//     // }
+export const requestEnd = label => ({
+    type: REQUEST_END,
+    payload: label
+});
 
-//     // return dispatch => {
-//     //     dispatch(fetchProductsBegin());
-//     //     return fakeGetProducts()
-//     //       .then(json => {
-//     //         dispatch(fetchProductsSuccess(json.products));
-//     //         return json.products;
-//     //       })
-//     //       .catch(error =>
-//     //         dispatch(fetchProductsFailure(error))
-//     //       );
-//     //   };
-//     }
+/////////////////User
+export const fetchUser = () => requestAction({
+    url: '/api/current_user',
+    onSuccess: setUser,
+    label: FETCH_USER
+})
 
-export const updateSurvey = (id, values, history) => async dispatch => {
-    const { data } = await axios.post(`/api/surveys/update/${id}`, values);
-    history.push(`/surveys/preview/${data._id}`);
-    dispatch({ type: FETCH_SURVEY, payload: data});
+const setUser = (user) => {
+    return {
+        type: SET_USER,
+        payload: user
+    }
 }
 
-export const fetchFieldsFromSurvey = (id) => async dispatch => {
-    const { data } = await axios.get(`/api/surveys/${id}`);
+/////////////////Surveys
+export const fetchSurveys = () => requestAction({
+    url: '/api/surveys',
+    onSuccess: setSurveys,
+    label: FETCH_SURVEYS
+ });
+
+function setSurveys(surveys) {
+    return {
+      type: SET_SURVEYS,
+      payload: surveys
+    };
+}
+
+/////////////////Single Survey
+export const fetchSurvey = (surveyId) => requestAction({
+    url: `/api/surveys/${surveyId}`,
+    onSuccess: setSurvey,
+    label: FETCH_SURVEY
+});
+
+const setSurvey = (survey) => {
+    return {
+        type: SET_SURVEY,
+        payload: survey
+    };
+}
+
+/////////////////Survey Form Fields
+export const fetchFieldsFromSurvey = (surveyId) => requestAction({
+    url: `/api/surveys/${surveyId}`,
+    onSuccess: setFieldsFromSurvey,
+    label: FETCH_FORM_FIELDS
+});
+
+const setFieldsFromSurvey = (survey) => {
     const fields = {
-        body: data.body,
-        fromEmail: data.fromEmail,
-        goodbye: data.goodbye,
-        greeting: data.greeting,
-        noText: data.noText,
-        question: data.question,
-        recipients: data.recipients.map(e => e.email).join(", "),
-        signature: data.signature,
-        subject: data.subject,
-        surveyName: data.surveyName,
-        yesText: data.yesText
+        body: survey.body,
+        fromEmail: survey.fromEmail,
+        goodbye: survey.goodbye,
+        greeting: survey.greeting,
+        noText: survey.noText,
+        question: survey.question,
+        recipients: survey.recipients.map(e => e.email).join(", "),
+        signature: survey.signature,
+        subject: survey.subject,
+        surveyName: survey.surveyName,
+        yesText: survey.yesText
     }
-    dispatch({ type: FETCH_FORM_FIELDS, payload: fields });
-}
-
-export const fetchSurveys = () => async dispatch => {
-    const { data } = await axios.get('/api/surveys');
-    dispatch({ type: FETCH_SURVEYS, payload: data }); //payload will be an array of current user's surveys 
-};
-
-export const fetchSurvey = (surveyId) => async dispatch => {
-   const { data } = await axios.get(`/api/surveys/${surveyId}`);
-   dispatch({ type: FETCH_SURVEY, payload: data });
-};
-
-export const deleteSurvey = (surveyId, history) => async dispatch => {
-    const { data } = await axios.delete(`/api/surveys/${surveyId}`);
-    if (history !== (null || undefined)) {
-        history.push('/dashboard');
-    } else {
-        dispatch(push('/dashboard')); 
-    }
-    dispatch({ type: FETCH_SURVEYS, payload: data });
-}
-
-
-//FETCH SURVEYS LIST
-export const fetchSurveysTEST = () => { //TODO: change name
-    return function(dispatch) {
-        dispatch(requestSurveys());
-        axios.get('/api/surveys')
-            .then(res => {
-                dispatch(receiveSurveys(res.data));
-            })
-            .catch(err => {
-                console.log(err.message);
-                dispatch(onRequestSurveysError(err.message));
-            });
-    }
-}
-
-const requestSurveys = () => {
     return {
-        type: REQUEST_SURVEYS
+        type: SET_FORM_FIELDS,
+        payload: fields
+    };
+}
+
+/////////////////Handle payment Token
+export const handleToken = (token, cost, credits) => requestAction({
+    url: '/api/stripe',
+    method: "POST",
+    data: { token, cost, credits },
+    onSuccess: setPaymentSuccessful,
+    label: HANDLE_TOKEN
+});
+
+const setPaymentSuccessful = (user) => {
+    setUser(user);
+    return {
+        type: PAYMENT_SUCCESSFUL
     }
 }
 
-const receiveSurveys = (surveys) => {
+
+/////////////////Save survey
+export const saveSurvey = (values) => requestAction({
+    url: '/api/surveys/save',
+    method: "POST",
+    data: values,
+    onSuccess: setSaveSuccessful,
+    label: SAVE_SURVEY
+});
+
+const setSaveSuccessful = (survey) => {
     return {
-        type: RECEIVE_SURVEYS,
-        surveys,
-        receivedAt: Date.now()
-    }
+        type: SAVE_SUCCESSFUL,
+        payload: survey._id
+    };
 }
 
-const onRequestSurveysError = (errorMessage) => {
+
+/////////////////Update survey
+export const updateSurvey = (id, values) => requestAction({
+    url: `/api/surveys/update/${id}`,
+    method: "POST",
+    data: values,
+    onSuccess: setSaveSuccessful,
+    label: SAVE_SURVEY
+});
+
+
+/////////////////Send survey
+export const sendSurvey = (surveyId) => requestAction({
+    url: `/api/surveys/send/${surveyId}`,
+    method: "POST",
+    onSuccess: setSendSuccessful,
+    label: SEND_SURVEY
+});
+
+const setSendSuccessful = ({ survey, user }) => {
+    setUser(user);
     return {
-        type: ERROR_SURVEYS,
-        errorMessage
-    }
+        type: SEND_SUCCESSFUL,
+        payload: survey._id
+    };
+}
+
+/////////////////Delete Survey
+export const deleteSurvey = (surveyId) => requestAction({
+    url: `/api/surveys/${surveyId}`,
+    method: "DELETE",
+    onSuccess: setDeleteSuccessful,
+    label: DELETE_SURVEY
+});
+
+const setDeleteSuccessful = (surveys) => {
+    setSurveys(surveys);
+    return {
+        type: DELETE_SUCCESSFUL
+    };
 }

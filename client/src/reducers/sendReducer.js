@@ -1,42 +1,44 @@
 import { 
-    FETCH_SURVEY,
-    SET_SURVEY,
+    SEND_SURVEY,
+    SEND_SUCCESSFUL,
     REQUEST_START,
     REQUEST_END,
     REQUEST_ERROR,
  } from '../actions/types';
 
  const INITIAL_STATE = {
-     isLoading: true,
+     isSending: false,
      isError: false,
      errorMessage: '',
-     survey: {}
+     sendSuccessful: false,
+     surveyId: ''
  }
 
 export default function(state = INITIAL_STATE, action) {
     switch (action.type) {
-        case SET_SURVEY:
+        case SEND_SUCCESSFUL:
             return Object.assign({}, state, {
-                survey: action.payload
+                sendSuccessful: true,
+                surveyId: action.payload
             });
         case REQUEST_START:
-            if (action.payload === FETCH_SURVEY) {
+            if (action.payload === SEND_SURVEY) {
                 return Object.assign({}, state, {
-                    isLoading: true
+                    isSending: true
                 });
             }   
             return state;
         case REQUEST_END:
-            if (action.payload === FETCH_SURVEY) {
+            if (action.payload === SEND_SURVEY) {
                 return Object.assign({}, state, {
-                    isLoading: false
+                    isSending: false
                 });
             }   
             return state;
         case REQUEST_ERROR:
-            if (action.payload === FETCH_SURVEY) {
+            if (action.payload === SEND_SURVEY) {
                 return Object.assign({}, state, {
-                    isLoading: false,
+                    isSending: false,
                     isError: true,
                     errorMessage: action.error
                 });
