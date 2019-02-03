@@ -143,10 +143,10 @@ export const handleToken = (token, cost, credits) => requestAction({
 });
 
 const setPaymentSuccessful = (user) => {
-    setUser(user);
-    return {
-        type: PAYMENT_SUCCESSFUL
-    }
+    return (
+        { type: PAYMENT_SUCCESSFUL },
+        setUser(user)
+    );
 }
 
 
@@ -186,24 +186,29 @@ export const sendSurvey = (surveyId) => requestAction({
 });
 
 const setSendSuccessful = ({ survey, user }) => {
-    setUser(user);
-    return {
-        type: SEND_SUCCESSFUL,
-        payload: survey._id
-    };
+    return (
+        { type: SEND_SUCCESSFUL, payload: survey._id},
+        setUser(user)
+    );
 }
 
 /////////////////Delete Survey
-export const deleteSurvey = (surveyId) => requestAction({
-    url: `/api/surveys/${surveyId}`,
+export const deleteSurvey = (surveyId, isPreview) => requestAction({
+    url: (isPreview ? `/api/surveys/${surveyId}` : `/api/surveys/list/${surveyId}`),
     method: "DELETE",
-    onSuccess: setDeleteSuccessful,
+    onSuccess: (isPreview ? setDeleteSuccessful : setDeleteSuccessfulList),
     label: DELETE_SURVEY
 });
 
-const setDeleteSuccessful = (surveys) => {
-    setSurveys(surveys);
-    return {
-        type: DELETE_SUCCESSFUL
-    };
+const setDeleteSuccessful = () => {
+    return (
+        { type: DELETE_SUCCESSFUL }
+    );
+}
+
+const setDeleteSuccessfulList = (surveys) => {
+    return (
+        { type: DELETE_SUCCESSFUL },
+        setSurveys(surveys)
+    );
 }
