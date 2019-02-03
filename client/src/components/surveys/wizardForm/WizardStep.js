@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux'
 import validate from '../../../utils/validate';
 import FormField from '../../formField/FormField';
@@ -17,6 +18,8 @@ let WizardStep = ({isSaved, step, handleSubmit, stepNumber, numberOfSteps, previ
             {loadingValues && <p>Loading Values...</p>}
             {saveStatus.isSaving && <p>Is saving...</p>}
             {saveStatus.saveSuccessful && <p>Saved!</p>}
+            {saveStatus.isError && <p>{saveStatus.errorMessage}</p>}
+            {saveStatus.saveSuccessful && <Redirect to={`/surveys/preview/${saveStatus.surveyId}`} />}
             <form className="WizardStep__form" onSubmit={handleSubmit}>
                 <div className="WizardStep__form--fields">
                     {_.map(step.fields, field => {

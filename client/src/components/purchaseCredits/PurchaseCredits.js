@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import StripeCheckout from 'react-stripe-checkout';
 import * as actions from '../../actions';
 
@@ -50,6 +51,9 @@ class PurchaseCredits extends Component {
     }
 
     render() {
+        if (this.props.paymentSuccessful) {
+            return <Redirect to="/dashboard" />
+        }
         return (
             <div>
                 <Header linkText="Dashboard" linkHref="/dashboard" />
