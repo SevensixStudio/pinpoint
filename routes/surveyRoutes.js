@@ -165,17 +165,18 @@ module.exports = app => {
     app.delete('/api/surveys/:surveyId', requireLogin, async (req, res) => {
         try {
             await Survey.deleteOne({ _id: req.params.surveyId });
+            const surveys = await Survey.find({ _user: req.user.id })
+                .sort({dateSent: -1})
+                .select({recipients: false});
+        
+            res.send(surveys);
         } catch (err) {
-            res.send(err);
+            res.status(404).send({ error: `Unable to delete survey with the ID of '${req.params.surveyId}'` });
         }
-        const surveys = await Survey.find({ _user: req.user.id })
-            .sort({dateSent: -1})
-            .select({recipients: false});
-    
-        res.send(surveys);
     });
 };
 
+//Helper functions
 function emailsStringToUniqueRecipients(emailsString) {
     const emails = (emailsString.split(',')).map(email => {
         return email.trim();
