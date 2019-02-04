@@ -93,14 +93,15 @@
                &:hover {
                    background-color: $color-primary-light;
                    color: $color-white;
+                   cursor: pointer;
 
-                   a {
+                   p {
                        color: $color-white;
                    }
                }
             }
 
-            &--action a {
+            &--action p {
                 display: block;
                 color: $color-grey-dark-4;
                 height: 100%;

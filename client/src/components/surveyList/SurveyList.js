@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchSurveys, deleteSurvey } from '../../actions';
+import { fetchSurveys, deleteSurvey, sendSurvey } from '../../actions';
 import TimeAgo from 'timeago-react';
 import CircleGraph from '../circleGraph/CircleGraph';
 
@@ -18,7 +18,7 @@ class SurveyList extends Component {
 
     renderSurveys() {
         const surveys = this.props.surveys;
-        if (surveys === 0) {
+        if (surveys.length === 0) {
             return <p className="SurveyList__empty">You haven't created any surveys yet. <a className="inline-link" href="/surveys/new">Create one now!</a></p>
         }
         if (this.props.isLoading) {
@@ -44,25 +44,30 @@ class SurveyList extends Component {
                         {survey.lastResponded ? [<p className="date">Last response recieved: </p>,<TimeAgo className="date--ago" datetime={new Date(survey.lastResponded)} />] : <p className="date">No one has responded to your survey yet</p>}
                     </div>
                     <div key={survey._id} className="SurveyList__item--toolsPanel" id="tools">
-                        <div className="SurveyList__item--toolsPanel--action">
-                            <a href={`/surveys/preview/${survey._id}`}><i className="far fa-eye"></i></a>
-                        </div>
+                        <Link to={`/surveys/preview/${survey._id}`}>
+                            <div className="SurveyList__item--toolsPanel--action">
+                                <p href={`/surveys/preview/${survey._id}`}><i className="far fa-eye"></i></p>
+                            </div>
+                        </Link>
                         {survey.isDraft && [
-                            <div key="send" className="SurveyList__item--toolsPanel--action">
-                                <a href="/"><i className="far fa-envelope"></i></a>
-                            </div>,
-                            <div key="edit" className="SurveyList__item--toolsPanel--action">
-                                <a href="/"><i className="far fa-edit"></i></a>
-                            </div>]}
-                        <div className="SurveyList__item--toolsPanel--action" onClick={() => this.props.deleteSurvey(survey._id)}>
-                            <a href="/"><i className="far fa-trash-alt"></i></a>
+                            <Link key="edit" to={`/surveys/edit/${survey._id}`}>
+                                <div className="SurveyList__item--toolsPanel--action">
+                                    <p><i className="far fa-edit"></i></p>
+                                </div>
+                            </Link>,
+                            <div key="send" className="SurveyList__item--toolsPanel--action" onClick={() => this.props.sendSurvey(survey._id)}>
+                                <p><i className="far fa-envelope"></i></p>
+                            </div>
+                        ]}
+                        <div className="SurveyList__item--toolsPanel--action" onClick={() => this.props.deleteSurvey(survey._id, false)}>
+                            <p><i className="far fa-trash-alt"></i></p>
                         </div>
                     </div>
                 </div>
             );
         });
     }
-    
+
     render() {
         return (
             <div className="SurveyList">
@@ -72,8 +77,20 @@ class SurveyList extends Component {
     }
 }
 
-function mapStateToProps({ surveyList: {surveys, isLoading }, auth: { user }, state }) {
-    return { surveys, isLoading, user, state };
+function mapStateToProps({ surveyList: {surveys, isLoading }, auth: { user }, deleteStatus, sendStatus, state }) {
+    return { 
+        surveys, 
+        isLoading,
+        user, 
+        isDeleting: deleteStatus.isDeleting,
+        isDeleteError: deleteStatus.isDeleteError,
+        deleteErrorMessage: deleteStatus.errorMessage,
+        deleteSuccessful: deleteStatus.deleteSuccessful,
+        isSending: sendStatus.isSending,
+        sendSuccessful: sendStatus.sendSuccessful,
+        isSendError: sendStatus.isError,
+        sendErrorMessage: sendStatus.errorMessage,
+        state };
 }
 
-export default connect(mapStateToProps, { fetchSurveys, deleteSurvey })(SurveyList);
+export default withRouter(connect(mapStateToProps, { fetchSurveys, deleteSurvey, sendSurvey })(SurveyList));
