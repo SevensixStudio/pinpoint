@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import StripeCheckout from 'react-stripe-checkout';
 import * as actions from '../../actions';
 
@@ -48,6 +48,12 @@ class PurchaseCredits extends Component {
                 </div>
             )
         });
+    }
+
+    componentWillUnmount() {
+        if (this.props.paymentSuccessful) {
+            this.props.resetPaymentState();
+        }
     }
 
     render() {
