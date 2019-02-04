@@ -4,6 +4,7 @@ import {
     REQUEST_START,
     REQUEST_END,
     REQUEST_ERROR,
+    RESET_PAYMENT
  } from '../actions/types';
 
  const INITIAL_STATE = {
@@ -42,6 +43,8 @@ export default function(state = INITIAL_STATE, action) {
                 });
             }   
             return state;
+        case RESET_PAYMENT: 
+            return (Object.assign({}, state, INITIAL_STATE));
         default: 
             return state;
     }

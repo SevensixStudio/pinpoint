@@ -3,7 +3,8 @@ import {
     REQUEST_START,
     REQUEST_END,
     FETCH_SURVEYS,
-    REQUEST_ERROR} from '../actions/types';
+    REQUEST_ERROR,
+    UPDATE_ITEM_SURVEYS_LIST } from '../actions/types';
 
 const INITIAL_STATE = {
     isLoading: true,
@@ -41,6 +42,12 @@ export default function(state = INITIAL_STATE, action) {
                 });
             }
             return state;
+        case UPDATE_ITEM_SURVEYS_LIST: 
+            const index = state.surveys.findIndex(x => x._id == action.payload._id);
+            state.surveys[index] = action.payload;
+            return Object.assign({}, state, {
+                surveys: state.surveys
+            });
         default: 
             return state;
     }
