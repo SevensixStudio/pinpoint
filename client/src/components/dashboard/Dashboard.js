@@ -9,6 +9,7 @@ import '../../index.scss';
 import './Dashboard.scss';
 
 class Dashboard extends Component {
+ 
     renderContent() {
         if (this.props.isLoading) {
             return <p>Loading...</p>
@@ -48,7 +49,6 @@ class Dashboard extends Component {
     }
 
     render() {
-        console.log(this.props.user);
         return (
             <div className="dashboard-container Dashboard">
                 <Header linkText="Create Survey" linkHref="/surveys/new" />
