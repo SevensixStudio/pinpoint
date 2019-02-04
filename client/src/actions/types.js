@@ -6,6 +6,7 @@ export const REQUEST_ERROR = 'request_error';
 
 export const FETCH_SURVEYS = 'fetch_surveys';
 export const SET_SURVEYS = 'set_surveys';
+export const UPDATE_ITEM_SURVEYS_LIST = "update_item_surveys_list";
 
 export const FETCH_SURVEY = 'fetch_survey';
 export const SET_SURVEY = 'set_survey';
@@ -18,6 +19,7 @@ export const SET_FORM_FIELDS = 'set_form_fields';
 
 export const HANDLE_TOKEN = "handle_token";
 export const PAYMENT_SUCCESSFUL = "payment_successful";
+export const RESET_PAYMENT = "reset_payment";
 
 export const SAVE_SURVEY = "save_survey";
 export const SAVE_SUCCESSFUL = "save_successful";

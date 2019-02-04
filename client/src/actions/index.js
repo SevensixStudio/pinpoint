@@ -6,6 +6,7 @@ import {
     REQUEST_ERROR,
     FETCH_SURVEYS,
     SET_SURVEYS,
+    UPDATE_ITEM_SURVEYS_LIST,
     FETCH_USER, 
     SET_USER,
     FETCH_SURVEY, 
@@ -14,6 +15,7 @@ import {
     SET_FORM_FIELDS,
     HANDLE_TOKEN,
     PAYMENT_SUCCESSFUL,
+    RESET_PAYMENT,
     SAVE_SURVEY,
     SAVE_SUCCESSFUL,
     SEND_SURVEY,
@@ -27,6 +29,8 @@ import {
     method = "GET",
     data = null,
     onSuccess = () => {},
+    onSuccessSecondAction = undefined,
+    onSuccessThirdAction = undefined,
     onFailure = () => {},
     label = ""
   }) {
@@ -37,6 +41,8 @@ import {
         method,
         data,
         onSuccess,
+        onSuccessSecondAction,
+        onSuccessThirdAction,
         onFailure,
         label
       }
@@ -72,6 +78,9 @@ export const fetchUser = () => requestAction({
 })
 
 const setUser = (user) => {
+    if (user.user) {
+        user = user.user;
+    }
     return {
         type: SET_USER,
         payload: user
@@ -90,6 +99,12 @@ function setSurveys(surveys) {
       type: SET_SURVEYS,
       payload: surveys
     };
+}
+
+const updateSurveysItem = ({ survey }) => {
+    return (
+        { type: UPDATE_ITEM_SURVEYS_LIST, payload: survey }
+    );
 }
 
 /////////////////Single Survey
@@ -139,16 +154,19 @@ export const handleToken = (token, cost, credits) => requestAction({
     method: "POST",
     data: { token, cost, credits },
     onSuccess: setPaymentSuccessful,
+    onSuccessSecondAction: setUser,
     label: HANDLE_TOKEN
 });
 
-const setPaymentSuccessful = (user) => {
+const setPaymentSuccessful = () => {
     return (
-        { type: PAYMENT_SUCCESSFUL },
-        setUser(user)
+        { type: PAYMENT_SUCCESSFUL }
     );
 }
 
+export const resetPaymentState = () => dispatch => {
+    dispatch({ type: RESET_PAYMENT});
+}
 
 /////////////////Save survey
 export const saveSurvey = (values) => requestAction({
@@ -182,13 +200,14 @@ export const sendSurvey = (surveyId) => requestAction({
     url: `/api/surveys/send/${surveyId}`,
     method: "POST",
     onSuccess: setSendSuccessful,
+    onSuccessSecondAction: setUser,
+    onSuccessThirdAction: updateSurveysItem,
     label: SEND_SURVEY
 });
 
-const setSendSuccessful = ({ survey, user }) => {
+const setSendSuccessful = ({ survey }) => {
     return (
-        { type: SEND_SUCCESSFUL, payload: survey._id},
-        setUser(user)
+        { type: SEND_SUCCESSFUL, payload: survey._id }
     );
 }
 
@@ -197,6 +216,7 @@ export const deleteSurvey = (surveyId, isPreview) => requestAction({
     url: (isPreview ? `/api/surveys/${surveyId}` : `/api/surveys/list/${surveyId}`),
     method: "DELETE",
     onSuccess: (isPreview ? setDeleteSuccessful : setDeleteSuccessfulList),
+    onSuccessSecondAction: (isPreview ? null : setSurveys),
     label: DELETE_SURVEY
 });
 
@@ -206,9 +226,8 @@ const setDeleteSuccessful = () => {
     );
 }
 
-const setDeleteSuccessfulList = (surveys) => {
+const setDeleteSuccessfulList = () => {
     return (
-        { type: DELETE_SUCCESSFUL },
-        setSurveys(surveys)
+        { type: DELETE_SUCCESSFUL }
     );
 }

@@ -13,6 +13,8 @@ const asyncMiddleware = ({ dispatch }) => next => action => {
         method,
         data,
         onSuccess,
+        onSuccessSecondAction,
+        onSuccessThirdAction,
         label
     } = action.payload;
 
@@ -31,6 +33,12 @@ const asyncMiddleware = ({ dispatch }) => next => action => {
     })
     .then(({ data }) => {
       dispatch(onSuccess(data));
+      if (onSuccessSecondAction !== undefined) {
+        dispatch(onSuccessSecondAction(data));
+      }
+      if (onSuccessThirdAction !== undefined) {
+        dispatch(onSuccessThirdAction(data));
+      }
     })
     .catch(error => {
       const err = (error.response ? error.response.data.error : error);
