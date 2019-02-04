@@ -14,7 +14,6 @@ import {
  }
 
 export default function(state = INITIAL_STATE, action) {
-    console.log(state);
     switch (action.type) {
         case SET_SURVEY:
             return Object.assign({}, state, {

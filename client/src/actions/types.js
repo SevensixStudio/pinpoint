@@ -29,3 +29,4 @@ export const SEND_SUCCESSFUL = "send_successful";
 
 export const DELETE_SURVEY = "delete_survey";
 export const DELETE_SUCCESSFUL = "delete_successful";
+export const RESET_DELETE_STATE = "reset_delete_state";

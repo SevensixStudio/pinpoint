@@ -21,7 +21,8 @@ import {
     SEND_SURVEY,
     SEND_SUCCESSFUL,
     DELETE_SURVEY,
-    DELETE_SUCCESSFUL
+    DELETE_SUCCESSFUL,
+    RESET_DELETE_STATE
  } from './types';
 
  function requestAction({
@@ -230,4 +231,8 @@ const setDeleteSuccessfulList = () => {
     return (
         { type: DELETE_SUCCESSFUL }
     );
+}
+
+export const resetDeleteState = () => dispatch => {
+    dispatch({ type: RESET_DELETE_STATE});
 }

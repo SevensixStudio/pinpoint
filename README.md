@@ -62,8 +62,9 @@ $ npm run dev
 
 ### TODO
 
+* Check on SendGrid account status
 * Add redirects to components
-* Wire up toolbar buttons in survey list item
+* Survey List sorting
 * Create UI for status updatus and validation
 * Ask for user verification on send and delete
 * Fill dashboard stats with real data

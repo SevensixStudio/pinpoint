@@ -118,6 +118,7 @@ class SurveyPreview extends Component {
     }
 
     render() {
+        console.log(this.props);
         if (this.props.deleteSuccessful) {
             return <Redirect to="/dashboard" />
         }

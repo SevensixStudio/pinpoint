@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchSurveys, deleteSurvey, sendSurvey } from '../../actions';
+import { fetchSurveys, deleteSurvey, sendSurvey, resetDeleteState } from '../../actions';
 import TimeAgo from 'timeago-react';
 import CircleGraph from '../circleGraph/CircleGraph';
 
@@ -13,6 +13,14 @@ class SurveyList extends Component {
     componentDidMount() {
         if (this.props.user) {
             this.props.fetchSurveys();
+        }
+    }
+
+    componentWillUnmount() {
+        console.log('component will unmounty');
+        if (this.props.deleteSuccessful) {
+            this.props.resetDeleteState();
+            console.log(this.props);
         }
     }
 
@@ -93,4 +101,4 @@ function mapStateToProps({ surveyList: {surveys, isLoading }, auth: { user }, de
         state };
 }
 
-export default withRouter(connect(mapStateToProps, { fetchSurveys, deleteSurvey, sendSurvey })(SurveyList));
+export default withRouter(connect(mapStateToProps, { fetchSurveys, deleteSurvey, sendSurvey, resetDeleteState })(SurveyList));
